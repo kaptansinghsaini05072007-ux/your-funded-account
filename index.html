@@ -1,326 +1,50 @@
-<!DOCTYPE html>
-<html lang="hi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Funded Account • Trade Like The Greatest</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .title-font { font-family: 'Space Grotesk', sans-serif; }
-        .hero-bg { background: radial-gradient(circle at 50% 20%, #1a0033 0%, #000000 70%); }
-        .neon { text-shadow: 0 0 20px #22ff88, 0 0 40px #22ff88; }
-        .glass { background: rgba(255,255,255,0.08); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.1); }
-        .card-hover:hover { transform: translateY(-12px); box-shadow: 0 25px 50px -12px #22ff88; }
-    </style>
-</head>
-<body class="bg-black text-white">
+import { useState, useEffect } from "react"; import { Button } from "@/components/ui/button"; import { Card, CardContent } from "@/components/ui/card"; import { motion } from "framer-motion";
 
-<!-- NAVBAR (Goat style) -->
-<nav class="fixed top-0 w-full z-50 bg-black/90 backdrop-blur-lg border-b border-white/10">
-    <div class="max-w-screen-2xl mx-auto px-8 py-5 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-600 rounded-3xl flex items-center justify-center text-3xl">🐐</div>
-            <h1 class="title-font text-3xl font-bold tracking-tighter neon">Your Funded Account</h1>
-        </div>
-        <div class="hidden md:flex gap-8 text-sm font-medium">
-            <a onclick="navigateTo('home')" class="hover:text-emerald-400">Home</a>
-            <a onclick="navigateTo('accounts')" class="hover:text-emerald-400">Accounts</a>
-            <a onclick="navigateTo('how')" class="hover:text-emerald-400">How it Works</a>
-            <a onclick="navigateTo('rules')" class="hover:text-emerald-400">Rules</a>
-            <a onclick="toggleChat()" class="hover:text-emerald-400">Support</a>
-        </div>
-        <button onclick="showAuthModal()" class="bg-emerald-500 hover:bg-emerald-600 text-black px-8 py-3 rounded-3xl font-semibold flex items-center gap-2">Get Funded Now →</button>
-    </div>
-</nav>
+export default function App() { const [page, setPage] = useState("home"); const [timer, setTimer] = useState(3600); const [chain, setChain] = useState("BEP20");
 
-<!-- HERO (Goat exact vibe) -->
-<section id="home" class="hero-bg min-h-screen flex items-center pt-20">
-    <div class="max-w-screen-2xl mx-auto px-8 grid md:grid-cols-2 gap-12 items-center">
-        <div class="space-y-8">
-            <div class="inline-flex items-center gap-3 bg-white/10 px-6 py-3 rounded-full text-sm font-medium">
-                <span class="animate-pulse w-3 h-3 bg-emerald-500 rounded-full"></span>
-                250,000+ Traders • $16M+ Paid Out • 4.8 Stars
-            </div>
-            <h1 class="title-font text-7xl leading-none font-bold neon">TRADE LIKE<br>THE GREATEST.<br>GET FUNDED.</h1>
-            <p class="text-2xl text-zinc-400">Instant funded accounts. Up to $2M capital. Keep 80% profit. USDT payouts on demand.</p>
-            <button onclick="showAuthModal()" class="bg-white text-black text-2xl px-12 py-6 rounded-3xl font-semibold flex items-center gap-4">Claim Your Funded Account →</button>
-            <div class="flex gap-8 text-sm">
-                <div>News Trading Allowed</div>
-                <div>Weekend Holding</div>
-                <div>No Time Limit</div>
-                <div>100% Refundable Fee</div>
-            </div>
-        </div>
-        <div class="glass rounded-3xl p-8">
-            <div class="text-emerald-400 font-mono text-xl mb-4">LIVE • $16,482,391 PAID</div>
-            <div class="text-6xl font-bold mb-8">Join 250K+ traders who got funded</div>
-            <div class="h-64 flex items-end gap-3 justify-center">
-                <!-- Fake candles -->
-                <div class="w-8 bg-emerald-500 h-1/3 rounded-t"></div>
-                <div class="w-8 bg-red-500 h-2/3 rounded-t"></div>
-                <div class="w-8 bg-emerald-500 h-4/5 rounded-t"></div>
-                <div class="w-8 bg-emerald-400 h-1/2 rounded-t"></div>
-            </div>
-        </div>
-    </div>
-</section>
+useEffect(() => { if (page === "payment" && timer > 0) { const interval = setInterval(() => setTimer(timer - 1), 1000); return () => clearInterval(interval); } }, [timer, page]);
 
-<!-- ACCOUNTS SECTION -->
-<section id="accounts" class="py-20 bg-zinc-950">
-    <div class="max-w-screen-2xl mx-auto px-8">
-        <h2 class="title-font text-5xl font-bold text-center mb-4">Choose Your Funded Account</h2>
-        <p class="text-center text-zinc-400 mb-12">Instant funding • One-time fee • USDT only</p>
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" id="accounts-grid"></div>
-    </div>
-</section>
+const formatTime = (t) => { const m = String(Math.floor(t / 60)).padStart(2, "0"); const s = String(t % 60).padStart(2, "0"); return ${m}:${s}; };
 
-<!-- HOW IT WORKS (Goat 7 steps) -->
-<section id="how" class="py-20 bg-black">
-    <div class="max-w-screen-2xl mx-auto px-8">
-        <h2 class="title-font text-5xl font-bold text-center mb-12">How It Works • 7 Simple Steps</h2>
-        <div class="grid md:grid-cols-2 lg:grid-cols-7 gap-6">
-            <div class="glass rounded-3xl p-6 text-center"><div class="text-4xl font-bold text-emerald-400 mb-2">01</div><div class="font-semibold">Choose Account</div><p class="text-sm text-zinc-400 mt-2">Select size & model</p></div>
-            <div class="glass rounded-3xl p-6 text-center"><div class="text-4xl font-bold text-emerald-400 mb-2">02</div><div class="font-semibold">Pay with USDT</div><p class="text-sm text-zinc-400 mt-2">Instant crypto payment</p></div>
-            <div class="glass rounded-3xl p-6 text-center"><div class="text-4xl font-bold text-emerald-400 mb-2">03</div><div class="font-semibold">Get Credentials</div><p class="text-sm text-zinc-400 mt-2">MT4/MT5 login in email</p></div>
-            <div class="glass rounded-3xl p-6 text-center"><div class="text-4xl font-bold text-emerald-400 mb-2">04</div><div class="font-semibold">Trade</div><p class="text-sm text-zinc-400 mt-2">No risk of your money</p></div>
-            <div class="glass rounded-3xl p-6 text-center"><div class="text-4xl font-bold text-emerald-400 mb-2">05</div><div class="font-semibold">Complete KYC</div><p class="text-sm text-zinc-400 mt-2">One-time verification</p></div>
-            <div class="glass rounded-3xl p-6 text-center"><div class="text-4xl font-bold text-emerald-400 mb-2">06</div><div class="font-semibold">Earn Profits</div><p class="text-sm text-zinc-400 mt-2">80% split on demand</p></div>
-            <div class="glass rounded-3xl p-6 text-center"><div class="text-4xl font-bold text-emerald-400 mb-2">07</div><div class="font-semibold">Withdraw USDT</div><p class="text-sm text-zinc-400 mt-2">24-48 hrs payout</p></div>
-        </div>
-    </div>
-</section>
+if (page === "home") { return ( 
 
-<!-- RULES -->
-<section id="rules" class="py-20 bg-zinc-950">
-    <div class="max-w-screen-2xl mx-auto px-8 grid md:grid-cols-2 gap-16">
-        <div>
-            <h3 class="text-4xl font-bold mb-8">Our Trading Rules</h3>
-            <ul class="space-y-6">
-                <li class="flex items-start gap-4"><i class="fas fa-check-circle text-emerald-400 mt-1"></i><span><strong>Daily Loss Limit:</strong> 5% (trailing)</span></li>
-                <li class="flex items-start gap-4"><i class="fas fa-check-circle text-emerald-400 mt-1"></i><span><strong>Max Drawdown:</strong> 10% (trailing)</span></li>
-                <li class="flex items-start gap-4"><i class="fas fa-check-circle text-emerald-400 mt-1"></i><span><strong>Profit Split:</strong> 80/20 (upgrade to 100% possible)</span></li>
-                <li class="flex items-start gap-4"><i class="fas fa-check-circle text-emerald-400 mt-1"></i><span>News Trading & Weekend Holding Allowed</span></li>
-                <li class="flex items-start gap-4"><i class="fas fa-check-circle text-emerald-400 mt-1"></i><span>No time limit • Scaling up to $2M</span></li>
-            </ul>
-        </div>
-        <div class="text-zinc-400 text-sm leading-relaxed">
-            Goat Funded Trader jaisa hi simple & trader-friendly rules. Trade without stress, keep most of the profit.
-        </div>
-    </div>
-</section>
+<motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-4xl font-bold mb-6" > Your Funded Account </motion.h1> <Button onClick={() => setPage("auth")}>Get Started 
 
-<!-- DASHBOARD -->
-<section id="dashboard" class="hidden min-h-screen bg-zinc-950 pt-24">
-    <div class="max-w-screen-2xl mx-auto px-8">
-        <h2 class="text-4xl font-bold mb-8">Welcome back, Kaptan • Your Dashboard</h2>
-        <div class="flex gap-8">
-            <div class="w-72 glass rounded-3xl p-6 h-fit sticky top-8">
-                <a onclick="buyNewAccount()" class="block py-5 px-6 bg-emerald-500 text-black rounded-3xl text-center font-semibold mb-3">Buy New Funded Account</a>
-                <a class="block py-4 px-6 hover:bg-white/10 rounded-3xl">My Accounts</a>
-                <a class="block py-4 px-6 hover:bg-white/10 rounded-3xl">Payout History</a>
-            </div>
-            <div class="flex-1" id="dash-content"></div>
-        </div>
-    </div>
-</section>
+); } 
 
-<!-- PAYMENT MODAL (Tera exact flow) -->
-<div id="payment-modal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-[9999]">
-    <div class="glass max-w-lg w-full mx-4 rounded-3xl p-10">
-        <h3 class="text-3xl font-bold mb-8">Pay with USDT • Instant Funding</h3>
-        <div id="payment-body" class="space-y-8"></div>
-        <div id="timer-section" class="hidden mt-8 text-center">
-            <p class="text-zinc-400">Payment window closes in</p>
-            <div id="timer" class="font-mono text-6xl font-bold text-emerald-400">59:59</div>
-        </div>
-        <div class="flex gap-4 mt-10">
-            <button onclick="cancelPayment()" class="flex-1 py-5 border border-red-400 text-red-400 rounded-3xl">Cancel</button>
-            <button onclick="confirmPayment()" id="confirm-btn" class="flex-1 py-5 bg-emerald-500 text-black rounded-3xl font-semibold">Confirm Payment</button>
-        </div>
-    </div>
-</div>
+if (page === "auth") { return ( 
 
-<!-- AUTH MODAL -->
-<div id="auth-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[10000]">
-    <div class="glass max-w-md w-full mx-4 rounded-3xl p-10">
-        <h2 class="text-4xl font-bold text-center mb-8">Get Funded Instantly</h2>
-        <button onclick="fakeLogin()" class="w-full py-6 bg-white text-black rounded-3xl font-semibold mb-4">Login to Dashboard</button>
-        <button onclick="fakeSignup()" class="w-full py-6 border border-white/30 rounded-3xl font-semibold">Sign Up • Start Free</button>
-        <p onclick="hideAuthModal()" class="text-center text-zinc-400 mt-8 cursor-pointer">Close</p>
-    </div>
-</div>
+Accept Rules & Agreement 
 
-<!-- CHATBOT -->
-<div onclick="toggleChat()" class="fixed bottom-8 right-8 bg-emerald-500 w-16 h-16 rounded-3xl flex items-center justify-center text-4xl shadow-2xl cursor-pointer z-[20000]">🐐</div>
-<div id="chat-window" class="hidden fixed bottom-28 right-8 w-96 bg-zinc-900 rounded-3xl shadow-2xl z-[20000] flex flex-col h-[520px]">
-    <div class="bg-emerald-500 text-black px-6 py-4 rounded-t-3xl font-semibold flex justify-between">Pro Support Bot <span onclick="toggleChat()" class="cursor-pointer">✕</span></div>
-    <div id="chat-messages" class="flex-1 p-6 overflow-y-auto space-y-4"></div>
-    <input id="chat-input" class="m-4 bg-zinc-800 rounded-3xl px-6 py-4 outline-none" placeholder="Ask about rules, buy, withdraw..." onkeypress="if(event.key==='Enter') sendChat()">
-</div>
+<Button onClick={() => setPage("dashboard")}>Login / Signup 
 
-<script>
-// Tailwind
-tailwind.config = { content: ["*"] }
+); } 
 
-// Accounts (Goat style sizes & prices)
-const accountsData = [
-    {id:1, name:"Starter", size:5000, price:49, daily:"5%", maxdd:"10%", split:"80/20"},
-    {id:2, name:"Growth", size:10000, price:89, daily:"5%", maxdd:"10%", split:"80/20"},
-    {id:3, name:"Pro", size:25000, price:199, daily:"5%", maxdd:"10%", split:"80/20"},
-    {id:4, name:"Elite", size:50000, price:349, daily:"5%", maxdd:"10%", split:"80/20"},
-    {id:5, name:"GOAT", size:100000, price:599, daily:"5%", maxdd:"10%", split:"80/20"}
-]
+if (page === "dashboard") { return ( 
 
-let selectedAccount = null
-let selectedChain = null
-let timerInterval = null
+Dashboard
 
-function renderAccounts() {
-    const grid = document.getElementById('accounts-grid')
-    grid.innerHTML = accountsData.map(acc => `
-        <div onclick="selectAccount(${acc.id})" class="glass card-hover rounded-3xl p-8 cursor-pointer">
-            <div class="flex justify-between">
-                <div><span class="text-emerald-400 text-sm">${acc.name}</span><div class="text-5xl font-bold font-mono">\[ {acc.size}</div></div>
-                <div class="text-right"><div class="text-4xl font-bold text-emerald-400"> \]{acc.price}</div><div class="text-xs">USDT</div></div>
-            </div>
-            <div class="mt-8 grid grid-cols-3 text-xs gap-y-3">
-                <div>Daily Loss</div><div class="text-emerald-400">${acc.daily}</div>
-                <div>Max DD</div><div class="text-emerald-400">${acc.maxdd}</div>
-                <div>Split</div><div class="text-emerald-400">${acc.split}</div>
-            </div>
-        </div>
-    `).join('')
-}
+Account Size: $10,000
 
-function selectAccount(id) {
-    selectedAccount = accountsData.find(a => a.id === id)
-    const html = `
-        <div class="flex justify-between items-center mb-8">
-            <div class="text-2xl">${selectedAccount.name} • \[ {selectedAccount.size}</div>
-            <div class="text-5xl font-bold text-emerald-400"> \]{selectedAccount.price} USDT</div>
-        </div>
-        <p class="text-zinc-400 mb-4">Select Chain (USDT only)</p>
-        <div class="grid grid-cols-3 gap-4">
-            <button onclick="chooseChain('BEP20', this)" class="chain-btn py-8 border border-white/20 hover:border-emerald-400 rounded-3xl text-center">BEP20</button>
-            <button onclick="chooseChain('ERC20', this)" class="chain-btn py-8 border border-white/20 hover:border-emerald-400 rounded-3xl text-center">ERC20</button>
-            <button onclick="chooseChain('TRC20', this)" class="chain-btn py-8 border border-white/20 hover:border-emerald-400 rounded-3xl text-center">TRC20</button>
-        </div>
-    `
-    document.getElementById('payment-body').innerHTML = html
-    document.getElementById('payment-modal').classList.remove('hidden')
-}
+Max Drawdown: 10%
 
-function chooseChain(chain, btn) {
-    selectedChain = chain
-    document.querySelectorAll('.chain-btn').forEach(b => b.classList.remove('border-emerald-400','bg-emerald-900/30'))
-    btn.classList.add('border-emerald-400','bg-emerald-900/30')
-}
+Daily Loss Limit: 5%
 
-function confirmPayment() {
-    if (!selectedChain) return alert("Chain select karo")
-    let addr = selectedChain === 'TRC20' ? 'TN9DDuzXnXirgAAS4mRe8VFQ6VxuVUQmJc' : '0x8e57d705f1b58ceda77c91df6ac80aac5c2a83df'
-    
-    const extra = `
-        <div class="mt-8 bg-black/60 rounded-3xl p-8">
-            <p class="text-xs text-zinc-400">Send exactly</p>
-            <p class="text-6xl font-mono text-emerald-400">\[ {selectedAccount.price} USDT</p>
-            <p class="mt-4 text-xs text-zinc-400">To ${selectedChain} address:</p>
-            <div class="font-mono text-sm bg-zinc-950 p-5 rounded-2xl break-all mt-2">${addr}</div>
-            <button onclick="copyAddress('${addr}')" class="mt-4 text-emerald-400 flex items-center gap-2"><i class="fas fa-copy"></i> Copy</button>
-        </div>
-    `
-    document.getElementById('payment-body').innerHTML += extra
-    document.getElementById('timer-section').classList.remove('hidden')
-    
-    let time = 3600
-    timerInterval = setInterval(() => {
-        time--
-        const m = Math.floor(time/60)
-        const s = time % 60
-        document.getElementById('timer').innerHTML = `\( {m}: \){s<10?'0':''}${s}`
-        if (time <= 0) { clearInterval(timerInterval); alert("Time up!"); cancelPayment() }
-    }, 1000)
-}
+<Button onClick={() => setPage("buy")}>Buy Account 
 
-function copyAddress(addr) {
-    navigator.clipboard.writeText(addr)
-    alert("✅ Address copied!")
-}
+); } 
 
-function cancelPayment() {
-    document.getElementById('payment-modal').classList.add('hidden')
-    if (timerInterval) clearInterval(timerInterval)
-    selectedAccount = selectedChain = null
-}
+if (page === "buy") { return ( 
 
-function showAuthModal() { document.getElementById('auth-modal').classList.remove('hidden') }
-function hideAuthModal() { document.getElementById('auth-modal').classList.add('hidden') }
+Select Payment
 
-function fakeLogin() {
-    hideAuthModal()
-    document.getElementById('home').classList.add('hidden')
-    document.getElementById('dashboard').classList.remove('hidden')
-    renderDashboard()
-}
-function fakeSignup() { fakeLogin() }
+<select onChange={(e) => setChain(e.target.value)}> BEP20ERC20TRC20 <Button onClick={() => setPage("payment")}>Buy Now 
 
-function renderDashboard() {
-    document.getElementById('dash-content').innerHTML = `
-        <div class="glass rounded-3xl p-8 mb-8">
-            <div class="text-emerald-400">Your Funded Balance</div>
-            <div class="text-7xl font-mono font-bold"> \]{selectedAccount ? selectedAccount.size : '50,000'}</div>
-        </div>
-        <button onclick="buyNewAccount()" class="w-full py-8 bg-emerald-500 text-black rounded-3xl text-2xl font-semibold">Buy Another Account</button>
-    `
-}
-function buyNewAccount() {
-    document.getElementById('dashboard').classList.add('hidden')
-    navigateTo('accounts')
-}
+); } 
 
-// Navigation
-function navigateTo(page) {
-    document.getElementById('home').classList.add('hidden')
-    document.getElementById('dashboard').classList.add('hidden')
-    if (page === 'accounts') renderAccounts()
-    window.scrollTo({top: document.getElementById(page).offsetTop - 80, behavior: 'smooth'})
-}
+if (page === "payment") { const address = { BEP20: "0x8e57d705f1b58ceda77c91df6ac80aac5c2a83df", ERC20: "0x8e57d705f1b58ceda77c91df6ac80aac5c2a83df", TRC20: "TN9DDuzXnXirgAAS4mRe8VFQ6VxuVUQmJc", };
 
-// Chatbot
-function toggleChat() {
-    const win = document.getElementById('chat-window')
-    win.classList.toggle('hidden')
-    if (!win.classList.contains('hidden') && document.getElementById('chat-messages').children.length === 0) {
-        addChat("Namaste! Main Goat Funded style ka support bot hoon. Rules, account buy, withdrawal ya koi bhi sawaal poochho.")
-    }
-}
-function addChat(text) {
-    const div = document.createElement('div')
-    div.className = "bg-zinc-800 rounded-3xl p-4"
-    div.innerHTML = text
-    document.getElementById('chat-messages').appendChild(div)
-    div.scrollIntoView({behavior:"smooth"})
-}
-function sendChat() {
-    const input = document.getElementById('chat-input')
-    if (!input.value) return
-    addChat(`<span class="text-emerald-400">You:</span> ${input.value}`)
-    const q = input.value.toLowerCase()
-    input.value = ''
-    setTimeout(() => {
-        let reply = "USDT payment ke baad credentials turant mil jaayenge. Rules follow karo!"
-        if (q.includes('rule')) reply = "5% daily loss, 10% max DD, 80/20 split, news & weekend allowed."
-        if (q.includes('withdraw')) reply = "Profit hit karo → Dashboard se request → USDT 24-48 hrs mein."
-        addChat(`<span class="text-emerald-400">Bot:</span> ${reply}`)
-    }, 700)
-}
+return ( <div className="p-6 flex flex-col items-center"> <h1 className="text-xl mb-4">Complete Payment</h1> <Card> <CardContent className="p-4 flex flex-col gap-3"> <p>Currency: USDT</p> <p>Chain: {chain}</p> <p>Address: {address[chain]}</p> <p className="text-red-500">Time Left: {formatTime(timer)}</p> <div className="flex gap-2"> <Button onClick={() => setPage("buy")}>Back</Button> <Button variant="destructive" onClick={() => setPage("dashboard")}>Cancel</Button> </div> </CardContent> </Card> </div> ); 
 
-// Init
-renderAccounts()
-console.log('%c✅ Goat Funded Trader style website loaded (advance version)', 'color:#22ff88;font-size:18px')
-</script>
-</body>
-</html>
+} }
+
