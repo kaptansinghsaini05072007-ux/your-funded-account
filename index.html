@@ -3,417 +3,331 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Funded Account</title>
+    <title>Your Funded Account • Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; }
+        .title-font { font-family: 'Space Grotesk', sans-serif; }
         .hero-bg {
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
-            animation: gradientShift 15s ease infinite;
+            background: radial-gradient(circle at 50% 30%, #1a0033 0%, #000000 70%);
         }
-        @keyframes gradientShift { 0% {background-position:0% 50%} 50% {background-position:100% 50%} 100% {background-position:0% 50%} }
-        .trading-bar { animation: tradeMove 4s linear infinite; }
-        .neon-text { text-shadow: 0 0 20px #22c55e, 0 0 40px #22c55e; }
+        .neon-green { text-shadow: 0 0 15px #22ff88, 0 0 30px #22ff88; }
+        .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(12px); }
+        .card-hover { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .card-hover:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 0 40px -10px #22ff88; }
     </style>
 </head>
-<body class="bg-black text-white">
+<body class="bg-black text-white overflow-x-hidden">
 
 <!-- NAVBAR -->
-<nav class="bg-zinc-950 border-b border-zinc-800 fixed w-full z-50">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-green-500 rounded-2xl flex items-center justify-center text-2xl font-bold">📈</div>
-            <h1 class="text-3xl font-bold tracking-tighter neon-text">Your Funded Account</h1>
+<nav class="fixed top-0 left-0 right-0 z-50 bg-zinc-950/80 backdrop-blur-md border-b border-white/10">
+    <div class="max-w-screen-2xl mx-auto px-8 py-5 flex items-center justify-between">
+        <div class="flex items-center gap-4">
+            <div class="w-9 h-9 bg-gradient-to-br from-green-400 to-emerald-600 rounded-2xl flex items-center justify-center text-2xl">📈</div>
+            <h1 class="title-font text-3xl font-semibold tracking-tighter neon-green">Your Funded Account</h1>
         </div>
         
-        <div class="hidden md:flex items-center gap-8 text-sm font-medium">
-            <a href="#" onclick="navigateTo('dashboard')" class="hover:text-green-400">Dashboard</a>
-            <a href="#" onclick="navigateTo('howto')" class="hover:text-green-400">How it Works</a>
-            <a href="#" onclick="navigateTo('accounts')" class="hover:text-green-400">Accounts</a>
-            <a href="#" class="hover:text-green-400">Rules</a>
+        <div class="flex items-center gap-10 text-sm font-medium">
+            <a href="#" class="hover:text-emerald-400 transition">Accounts</a>
+            <a href="#" class="hover:text-emerald-400 transition">Rules</a>
+            <a href="#" class="hover:text-emerald-400 transition">Payouts</a>
+            <a href="#" onclick="toggleChat()" class="hover:text-emerald-400 transition">Support</a>
         </div>
-
-        <div class="flex items-center gap-4">
-            <a href="https://instagram.com" target="_blank" class="text-zinc-400 hover:text-white"><i class="fab fa-instagram text-xl"></i></a>
-            <a href="https://facebook.com" target="_blank" class="text-zinc-400 hover:text-white"><i class="fab fa-facebook text-xl"></i></a>
-            <a href="https://twitter.com" target="_blank" class="text-zinc-400 hover:text-white"><i class="fab fa-x-twitter text-xl"></i></a>
-            <button onclick="showAuthModal()" class="bg-green-500 hover:bg-green-600 px-6 py-2.5 rounded-2xl font-semibold text-sm">Get Started</button>
-        </div>
+        
+        <button onclick="showAuthModal()" 
+                class="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 px-8 py-3 rounded-2xl font-semibold flex items-center gap-2">
+            Get Started <i class="fas fa-arrow-right"></i>
+        </button>
     </div>
 </nav>
 
-<!-- HERO LANDING -->
-<section id="landing" class="hero-bg min-h-screen flex items-center pt-20">
-    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-        <div class="space-y-8">
-            <h1 class="text-6xl md:text-7xl font-bold leading-none tracking-tighter neon-text">
-                TRADE WITH<br>YOUR FUNDED<br>ACCOUNT
-            </h1>
-            <p class="text-2xl text-zinc-400">Instant funded trading accounts. No risk. Real profits.</p>
-            
-            <div class="flex items-center gap-4">
-                <button onclick="showAuthModal()" 
-                        class="bg-green-500 hover:bg-green-600 text-black px-10 py-5 rounded-3xl text-xl font-semibold flex items-center gap-3">
-                    <span>Get Started Now</span>
-                    <i class="fas fa-arrow-right"></i>
-                </button>
-                <div class="text-sm text-zinc-500">Trusted by 12,458 traders</div>
+<!-- HERO -->
+<section class="hero-bg min-h-screen flex items-center pt-20">
+    <div class="max-w-screen-2xl mx-auto px-8 grid md:grid-cols-2 gap-16 items-center">
+        <div class="space-y-10">
+            <div class="inline-flex items-center gap-2 bg-white/5 px-5 py-2 rounded-full text-sm">
+                <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                1,284 traders live right now
             </div>
-
-            <!-- Animated trading stats -->
-            <div class="flex gap-8 text-sm">
-                <div><span class="block text-green-400 text-4xl font-bold" id="funded-count">12458</span> Funded Accounts</div>
-                <div><span class="block text-green-400 text-4xl font-bold" id="payout-count">$2.8M</span> Paid Out</div>
-                <div><span class="block text-green-400 text-4xl font-bold" id="live-traders">847</span> Trading Live</div>
+            
+            <h1 class="title-font text-7xl leading-none font-semibold tracking-tighter neon-green">
+                TRADE BIG.<br>GET FUNDED.<br>KEEP 80%.
+            </h1>
+            
+            <p class="text-xl text-zinc-400 max-w-lg">Instant funded accounts. Strict rules. Real payouts. No bullshit.</p>
+            
+            <button onclick="showAuthModal()" 
+                    class="bg-white text-black px-10 py-6 rounded-3xl text-xl font-semibold hover:scale-105 transition flex items-center gap-4 group">
+                Start Trading Now
+                <span class="group-active:rotate-45 transition">→</span>
+            </button>
+            
+            <div class="flex gap-12 text-sm">
+                <div>5% Daily Loss Limit</div>
+                <div>10% Max Drawdown</div>
+                <div>80/20 Split</div>
             </div>
         </div>
-
-        <div class="relative">
-            <div class="bg-zinc-900/70 backdrop-blur-xl border border-green-500/30 rounded-3xl p-8 shadow-2xl">
-                <div class="h-80 flex items-center justify-center text-8xl animate-pulse">📊</div>
-                <div class="text-center text-green-400 font-medium text-xl mt-6">Live Market • BTC +2.4% • EURUSD +0.8%</div>
-                <div class="mt-6 grid grid-cols-3 gap-4 text-center text-xs">
-                    <div class="bg-zinc-800 rounded-2xl py-3">Daily Loss Limit<br><span class="text-green-400">5%</span></div>
-                    <div class="bg-zinc-800 rounded-2xl py-3">Max Drawdown<br><span class="text-green-400">10%</span></div>
-                    <div class="bg-zinc-800 rounded-2xl py-3">Profit Split<br><span class="text-green-400">80/20</span></div>
+        
+        <!-- Fake Trading Chart -->
+        <div class="glass border border-white/10 rounded-3xl p-6 h-96 relative overflow-hidden">
+            <div class="flex justify-between mb-6">
+                <div>
+                    <div class="text-emerald-400 font-mono text-2xl">EURUSD +0.87%</div>
+                    <div class="text-xs text-zinc-500">LIVE • 1H CHART</div>
+                </div>
+                <div class="text-right">
+                    <div class="text-3xl font-semibold">$24,850</div>
+                    <div class="text-emerald-400 text-sm">+ $1,240 today</div>
                 </div>
             </div>
+            <!-- Fake candles -->
+            <div class="h-60 flex items-end gap-1 justify-center">
+                <div class="w-4 bg-emerald-500/70 h-[40%] rounded-t"></div>
+                <div class="w-4 bg-red-500/70 h-[65%] rounded-t"></div>
+                <div class="w-4 bg-emerald-500/70 h-[80%] rounded-t"></div>
+                <div class="w-4 bg-emerald-500 h-[55%] rounded-t"></div>
+                <div class="w-4 bg-red-500/70 h-[30%] rounded-t"></div>
+                <div class="w-4 bg-emerald-500 h-[90%] rounded-t"></div>
+            </div>
+            <div class="absolute bottom-8 left-8 text-xs text-zinc-400">Smooth trading experience guaranteed</div>
         </div>
     </div>
 </section>
 
-<!-- DASHBOARD + BUY SECTION (hidden initially) -->
-<section id="dashboard-section" class="hidden min-h-screen bg-zinc-950 pt-20">
-    <div class="max-w-7xl mx-auto px-6">
-        <h2 class="text-4xl font-bold mb-8">Welcome back, Kaptan 👋</h2>
+<!-- DASHBOARD SECTION -->
+<section id="dashboard" class="hidden min-h-screen bg-zinc-950 pt-24">
+    <div class="max-w-screen-2xl mx-auto px-8 flex gap-8">
+        <!-- Sidebar -->
+        <div class="w-72 bg-zinc-900 rounded-3xl p-6 h-fit sticky top-24">
+            <div class="text-emerald-400 font-semibold mb-6 flex items-center gap-2"><i class="fas fa-user"></i> Kaptan</div>
+            <div class="space-y-2">
+                <a href="#" onclick="showSection('buy')" class="flex items-center gap-3 px-5 py-4 hover:bg-white/5 rounded-2xl transition">Buy New Account</a>
+                <a href="#" class="flex items-center gap-3 px-5 py-4 hover:bg-white/5 rounded-2xl transition">My Accounts</a>
+                <a href="#" class="flex items-center gap-3 px-5 py-4 hover:bg-white/5 rounded-2xl transition">Payout History</a>
+                <a href="#" onclick="toggleChat()" class="flex items-center gap-3 px-5 py-4 hover:bg-white/5 rounded-2xl transition">Support Chat</a>
+            </div>
+        </div>
         
-        <!-- Buy Accounts -->
-        <div class="mb-12">
-            <h3 class="text-2xl font-semibold mb-6">Buy Funded Account</h3>
-            <div class="grid md:grid-cols-3 gap-6" id="accounts-grid">
-                <!-- JS se dynamically fill hoga -->
+        <!-- Main Content -->
+        <div class="flex-1">
+            <h2 class="text-4xl font-semibold mb-10">Choose Your Funded Account</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="accounts-grid">
+                <!-- JS filled -->
             </div>
         </div>
-
-        <!-- How to Use -->
-        <div id="howto" class="bg-zinc-900 rounded-3xl p-8 mb-12">
-            <h3 class="text-2xl font-semibold mb-6">How to Use Your Funded Account</h3>
-            <div class="grid md:grid-cols-3 gap-6 text-sm">
-                <div><strong>1. Buy Account</strong><br>USDT me payment karo → Instant credentials milenge</div>
-                <div><strong>2. Trade</strong><br>MT4/MT5 pe login karo, rules follow karo</div>
-                <div><strong>3. Withdraw Profits</strong><br>80% profit apna, request karo 24 ghante mein payout</div>
-            </div>
-        </div>
-
-        <div class="text-center text-zinc-500 text-sm">Full rules, withdrawal process, aur certificate sab chatbot mein mil jaayega</div>
     </div>
 </section>
 
-<!-- AUTH MODAL -->
-<div id="auth-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[100]">
-    <div class="bg-zinc-900 rounded-3xl w-full max-w-md mx-4 p-8">
-        <h2 id="modal-title" class="text-3xl font-bold mb-6 text-center">Get Started</h2>
+<!-- PAYMENT MODAL (Improved) -->
+<div id="payment-modal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-50">
+    <div class="bg-zinc-900 rounded-3xl max-w-md w-full mx-4 p-8 glass border border-white/10">
+        <h3 class="text-2xl font-semibold mb-6">Complete USDT Payment</h3>
+        <div id="payment-content" class="space-y-8"></div>
         
-        <div class="flex border-b mb-6">
-            <button onclick="switchTab(0)" id="tab-login" class="flex-1 py-3 font-medium border-b-2 border-green-500">Login</button>
-            <button onclick="switchTab(1)" id="tab-signup" class="flex-1 py-3 font-medium">Sign Up</button>
-        </div>
-
-        <div id="login-form">
-            <input type="email" id="login-email" placeholder="Email" class="w-full bg-zinc-800 rounded-2xl px-6 py-4 mb-4">
-            <input type="password" id="login-pass" placeholder="Password" class="w-full bg-zinc-800 rounded-2xl px-6 py-4 mb-4">
-            <label class="flex items-center gap-2 text-sm mb-6">
-                <input type="checkbox" class="accent-green-500" checked> I accept all rules & terms
-            </label>
-            <button onclick="fakeLogin()" class="w-full bg-green-500 hover:bg-green-600 text-black py-4 rounded-3xl font-semibold">Login</button>
-        </div>
-
-        <div id="signup-form" class="hidden">
-            <input type="text" id="signup-name" placeholder="Full Name" class="w-full bg-zinc-800 rounded-2xl px-6 py-4 mb-4">
-            <input type="email" id="signup-email" placeholder="Email" class="w-full bg-zinc-800 rounded-2xl px-6 py-4 mb-4">
-            <input type="password" id="signup-pass" placeholder="Password" class="w-full bg-zinc-800 rounded-2xl px-6 py-4 mb-4">
-            <label class="flex items-center gap-2 text-sm mb-6">
-                <input type="checkbox" id="terms-check" class="accent-green-500"> I accept all rules & terms
-            </label>
-            <button onclick="fakeSignup()" class="w-full bg-green-500 hover:bg-green-600 text-black py-4 rounded-3xl font-semibold">Create Account</button>
+        <div id="timer-area" class="hidden mt-8 text-center">
+            <p class="text-zinc-400 text-sm">Payment window (60 minutes)</p>
+            <div id="countdown" class="font-mono text-6xl font-bold text-emerald-400 tracking-widest">59:59</div>
         </div>
         
-        <button onclick="hideAuthModal()" class="w-full mt-4 text-zinc-400">Close</button>
+        <div class="mt-10 flex gap-4">
+            <button onclick="cancelPayment()" class="flex-1 py-4 rounded-2xl border border-red-500/30 text-red-400 hover:bg-red-950">Cancel</button>
+            <button onclick="confirmBuy()" id="confirm-btn" class="flex-1 py-4 bg-emerald-500 hover:bg-emerald-600 text-black rounded-2xl font-semibold">Confirm & Pay</button>
+        </div>
     </div>
 </div>
 
-<!-- PAYMENT MODAL -->
-<div id="payment-modal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-[200]">
-    <div class="bg-zinc-900 rounded-3xl w-full max-w-lg mx-4 p-8">
-        <h3 class="text-2xl font-bold mb-6">Complete Payment</h3>
-        
-        <div id="payment-details" class="space-y-6"></div>
-
-        <div class="mt-8 flex justify-between">
-            <button onclick="cancelPayment()" class="px-8 py-3 text-red-400 hover:bg-red-950 rounded-2xl">Cancel</button>
-            <button onclick="startTimer()" id="buy-now-btn" class="bg-green-500 hover:bg-green-600 px-10 py-3 rounded-2xl font-semibold">Buy Now</button>
-        </div>
-
-        <!-- Countdown -->
-        <div id="countdown-area" class="hidden mt-8 text-center">
-            <p class="text-sm text-zinc-400 mb-2">Payment window closes in</p>
-            <div id="timer" class="text-5xl font-mono font-bold text-green-400">59:59</div>
-        </div>
+<!-- AUTH MODAL -->
+<div id="auth-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[100]">
+    <div class="bg-zinc-900 rounded-3xl p-10 max-w-md w-full">
+        <h2 class="text-3xl font-semibold mb-8 text-center">Welcome</h2>
+        <button onclick="fakeLogin()" class="w-full py-5 bg-white text-black rounded-3xl font-semibold mb-4">Login</button>
+        <button onclick="fakeSignup()" class="w-full py-5 border border-white/30 hover:bg-white/5 rounded-3xl font-semibold">Create New Account</button>
+        <p onclick="hideAuthModal()" class="text-center text-zinc-400 mt-6 cursor-pointer">Close</p>
     </div>
 </div>
 
 <!-- CHATBOT -->
-<div onclick="toggleChat()" class="fixed bottom-8 right-8 w-14 h-14 bg-green-500 hover:bg-green-600 rounded-2xl flex items-center justify-center shadow-2xl cursor-pointer z-[300]">
-    <i class="fas fa-robot text-3xl"></i>
+<div onclick="toggleChat()" class="fixed bottom-8 right-8 bg-gradient-to-br from-emerald-500 to-green-600 w-16 h-16 rounded-3xl flex items-center justify-center shadow-2xl cursor-pointer hover:scale-110 transition z-50">
+    <i class="fas fa-robot text-4xl"></i>
 </div>
 
-<div id="chat-window" class="hidden fixed bottom-28 right-8 w-96 bg-zinc-900 rounded-3xl shadow-2xl overflow-hidden z-[300]">
-    <div class="bg-green-500 text-black px-6 py-4 font-semibold flex justify-between">
-        <span>Customer Support Bot</span>
-        <span onclick="toggleChat()" class="cursor-pointer">✕</span>
+<div id="chat-window" class="hidden fixed bottom-28 right-8 w-96 bg-zinc-900 rounded-3xl shadow-2xl z-50 flex flex-col h-[480px]">
+    <div class="bg-emerald-600 text-black px-6 py-4 rounded-t-3xl font-medium flex justify-between">
+        <span>Pro Support Bot</span>
+        <span onclick="toggleChat()" class="cursor-pointer text-xl">×</span>
     </div>
-    <div id="chat-messages" class="h-96 p-4 overflow-y-auto space-y-4 text-sm"></div>
-    <div class="p-4 border-t">
-        <input id="chat-input" placeholder="Type your question..." 
-               class="w-full bg-zinc-800 rounded-2xl px-5 py-3 text-sm" onkeypress="if(event.key==='Enter') sendChat()">
+    <div id="chat-body" class="flex-1 p-5 overflow-auto space-y-4 text-sm"></div>
+    <div class="p-4 border-t border-white/10">
+        <input id="chat-input" onkeypress="if(event.key==='Enter') sendMessage()" 
+               class="w-full bg-zinc-800 rounded-2xl px-6 py-4 outline-none" placeholder="Ask anything about rules, buy, withdraw...">
     </div>
 </div>
 
 <script>
-// Tailwind script
-function initTailwind() {
-    tailwind.config = { content: ["*"], theme: { extend: {} } }
-}
-initTailwind()
+// Tailwind
+tailwind.config = { content: ["*"] }
 
-// Sample accounts
 const accounts = [
-    { id:1, name:"Starter", size:5000, price:49, daily:"5%", maxdd:"10%", split:"80/20" },
-    { id:2, name:"Pro", size:10000, price:89, daily:"5%", maxdd:"10%", split:"80/20" },
-    { id:3, name:"Elite", size:25000, price:199, daily:"5%", maxdd:"10%", split:"80/20" },
-    { id:4, name:"Master", size:50000, price:349, daily:"5%", maxdd:"10%", split:"80/20" }
+    {name: "Starter", size: "5,000", price: 49, daily: "5%", dd: "10%"},
+    {name: "Growth", size: "10,000", price: 89, daily: "5%", dd: "10%"},
+    {name: "Pro", size: "25,000", price: 199, daily: "5%", dd: "10%"},
+    {name: "Elite", size: "50,000", price: 349, daily: "5%", dd: "10%"}
 ]
 
-let selectedAccount = null
-let selectedChain = null
-let timerInterval = null
+let selectedAcc = null
+let timer = null
 
-// Render accounts
 function renderAccounts() {
     const grid = document.getElementById('accounts-grid')
-    grid.innerHTML = accounts.map(acc => `
-        <div onclick="selectAccount(${acc.id})" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 hover:border-green-500 rounded-3xl p-6 cursor-pointer transition-all">
-            <div class="flex justify-between">
+    grid.innerHTML = accounts.map((acc, i) => `
+        <div onclick="selectAccount(${i})" class="glass border border-white/10 rounded-3xl p-7 card-hover cursor-pointer">
+            <div class="flex justify-between items-start">
                 <div>
-                    <div class="font-bold text-xl">${acc.name}</div>
-                    <div class="text-3xl font-mono">\[ {acc.size.toLocaleString()}</div>
+                    <div class="font-semibold text-xl">${acc.name}</div>
+                    <div class="text-4xl font-mono mt-2">\[ {acc.size}</div>
                 </div>
                 <div class="text-right">
-                    <div class="text-green-400 text-3xl font-bold"> \]{acc.price}</div>
-                    <div class="text-xs text-zinc-400">USDT</div>
+                    <div class="text-emerald-400 text-3xl font-bold"> \]{acc.price}</div>
+                    <div class="text-xs text-zinc-500">USDT</div>
                 </div>
             </div>
-            <div class="mt-6 grid grid-cols-3 gap-2 text-xs">
-                <div>Daily Loss<br><span class="text-green-400">${acc.daily}</span></div>
-                <div>Max DD<br><span class="text-green-400">${acc.maxdd}</span></div>
-                <div>Profit Split<br><span class="text-green-400">${acc.split}</span></div>
+            <div class="mt-10 text-xs grid grid-cols-2 gap-y-4">
+                <div>Daily Loss Limit</div><div class="text-emerald-400 text-right">${acc.daily}</div>
+                <div>Max Drawdown</div><div class="text-emerald-400 text-right">${acc.dd}</div>
+                <div>Profit Split</div><div class="text-emerald-400 text-right">80/20</div>
             </div>
         </div>
     `).join('')
 }
 
-// Select account
-function selectAccount(id) {
-    selectedAccount = accounts.find(a => a.id === id)
-    if (!selectedAccount) return
-    
+function selectAccount(i) {
+    selectedAcc = accounts[i]
     const html = `
-        <div class="flex justify-between items-center">
-            <div>
-                <h4 class="font-semibold">${selectedAccount.name} Account</h4>
-                <p class="text-4xl font-mono">\[ {selectedAccount.size}</p>
-            </div>
-            <div class="text-right">
-                <p class="text-green-400 text-5xl font-bold"> \]{selectedAccount.price}</p>
-                <p class="text-xs text-zinc-400">USDT only • Crypto payment</p>
-            </div>
+        <div class="flex justify-between">
+            <div class="text-xl font-medium">${selectedAcc.name} Account - \[ {selectedAcc.size}</div>
+            <div class="text-4xl font-bold text-emerald-400"> \]{selectedAcc.price} USDT</div>
         </div>
-        
         <div class="mt-8">
-            <p class="text-sm mb-3">Select Chain</p>
+            <p class="text-zinc-400 mb-3">Select Network</p>
             <div class="grid grid-cols-3 gap-3">
-                <button onclick="chooseChain('BEP20')" class="chain-btn border border-zinc-700 hover:border-yellow-400 rounded-2xl py-4 text-center">BEP20 (BNB)</button>
-                <button onclick="chooseChain('ERC20')" class="chain-btn border border-zinc-700 hover:border-blue-400 rounded-2xl py-4 text-center">ERC20 (ETH)</button>
-                <button onclick="chooseChain('TRC20')" class="chain-btn border border-zinc-700 hover:border-red-400 rounded-2xl py-4 text-center">TRC20 (TRON)</button>
+                <button onclick="selectChain(this, 'BEP20')" class="chain-btn py-4 border border-white/20 hover:border-emerald-400 rounded-2xl">BEP20</button>
+                <button onclick="selectChain(this, 'ERC20')" class="chain-btn py-4 border border-white/20 hover:border-emerald-400 rounded-2xl">ERC20</button>
+                <button onclick="selectChain(this, 'TRC20')" class="chain-btn py-4 border border-white/20 hover:border-emerald-400 rounded-2xl">TRC20</button>
             </div>
         </div>
     `
-    document.getElementById('payment-details').innerHTML = html
+    document.getElementById('payment-content').innerHTML = html
     document.getElementById('payment-modal').classList.remove('hidden')
-    document.getElementById('buy-now-btn').onclick = () => { if(selectedChain) startTimer() }
+    document.getElementById('timer-area').classList.add('hidden')
 }
 
-// Choose chain
-function chooseChain(chain) {
-    selectedChain = chain
-    document.querySelectorAll('.chain-btn').forEach(b => b.classList.remove('border-green-500', 'bg-green-900/30'))
-    event.target.classList.add('border-green-500', 'bg-green-900/30')
+function selectChain(btn, chain) {
+    document.querySelectorAll('.chain-btn').forEach(b => b.classList.remove('border-emerald-400', 'bg-emerald-900/30'))
+    btn.classList.add('border-emerald-400', 'bg-emerald-900/30')
+    window.selectedChain = chain
 }
 
-// Start timer
-function startTimer() {
-    document.getElementById('countdown-area').classList.remove('hidden')
-    let time = 3600 // 1 hour
-    if(timerInterval) clearInterval(timerInterval)
+function confirmBuy() {
+    if (!window.selectedChain) {
+        alert("Please select a chain")
+        return
+    }
     
-    timerInterval = setInterval(() => {
-        time--
-        const min = Math.floor(time/60)
-        const sec = time % 60
-        document.getElementById('timer').textContent = `\( {min}: \){sec < 10 ? '0' : ''}${sec}`
-        
-        if(time <= 0) {
-            clearInterval(timerInterval)
-            alert("⏰ Time's up! Payment window closed. Please try again.")
+    let addr = window.selectedChain === 'TRC20' 
+        ? "TN9DDuzXnXirgAAS4mRe8VFQ6VxuVUQmJc" 
+        : "0x8e57d705f1b58ceda77c91df6ac80aac5c2a83df"
+    
+    const extraHTML = `
+        <div class="bg-black/60 p-6 rounded-2xl mt-6">
+            <p class="text-xs text-zinc-400">Send exactly</p>
+            <p class="text-5xl font-mono text-emerald-400">$${selectedAcc.price} USDT</p>
+            <p class="mt-4 text-xs text-zinc-400">To ${window.selectedChain} address:</p>
+            <p class="font-mono text-sm break-all mt-2 bg-zinc-950 p-4 rounded-xl">${addr}</p>
+            <button onclick="copyToClip('${addr}')" class="mt-4 text-xs text-emerald-400 underline">Copy Address</button>
+        </div>
+    `
+    document.getElementById('payment-content').innerHTML += extraHTML
+    document.getElementById('timer-area').classList.remove('hidden')
+    
+    let timeLeft = 3600
+    timer = setInterval(() => {
+        timeLeft--
+        let m = Math.floor(timeLeft / 60)
+        let s = timeLeft % 60
+        document.getElementById('countdown').textContent = `\( {m}: \){s<10?'0':''}${s}`
+        if (timeLeft <= 0) {
+            clearInterval(timer)
+            alert("Time expired. Please start again.")
             cancelPayment()
         }
     }, 1000)
-    
-    // Show address
-    let address = ''
-    if(selectedChain === 'BEP20' || selectedChain === 'ERC20') address = '0x8e57d705f1b58ceda77c91df6ac80aac5c2a83df'
-    else address = 'TN9DDuzXnXirgAAS4mRe8VFQ6VxuVUQmJc'
-    
-    const extra = `
-        <div class="bg-black/50 rounded-2xl p-6 mt-6">
-            <p class="text-xs text-zinc-400">Send exactly</p>
-            <p class="text-4xl font-mono">${selectedAccount.price} USDT</p>
-            <p class="text-xs text-zinc-400 mt-4">To this ${selectedChain} address:</p>
-            <div class="font-mono text-sm bg-zinc-950 p-4 rounded-xl break-all mt-2">${address}</div>
-            <button onclick="copyAddress('${address}')" class="text-xs mt-3 text-green-400">📋 Copy Address</button>
-        </div>
-    `
-    document.getElementById('payment-details').innerHTML += extra
 }
 
-// Copy address
-function copyAddress(addr) {
-    navigator.clipboard.writeText(addr)
-    alert('✅ Address copied!')
+function copyToClip(text) {
+    navigator.clipboard.writeText(text)
+    alert("✅ Address copied to clipboard!")
 }
 
-// Cancel
 function cancelPayment() {
     document.getElementById('payment-modal').classList.add('hidden')
-    selectedAccount = null
-    selectedChain = null
-    if(timerInterval) clearInterval(timerInterval)
-}
-
-// Fake login/signup
-function fakeLogin() {
-    hideAuthModal()
-    document.getElementById('landing').classList.add('hidden')
-    document.getElementById('dashboard-section').classList.remove('hidden')
-    renderAccounts()
-}
-
-function fakeSignup() {
-    if(!document.getElementById('terms-check').checked) {
-        alert("Please accept the rules & terms")
-        return
-    }
-    hideAuthModal()
-    document.getElementById('landing').classList.add('hidden')
-    document.getElementById('dashboard-section').classList.remove('hidden')
-    renderAccounts()
+    if (timer) clearInterval(timer)
 }
 
 function showAuthModal() {
     document.getElementById('auth-modal').classList.remove('hidden')
-    switchTab(0)
 }
 
 function hideAuthModal() {
     document.getElementById('auth-modal').classList.add('hidden')
-}
-
-function switchTab(n) {
-    document.getElementById('login-form').classList.toggle('hidden', n===1)
-    document.getElementById('signup-form').classList.toggle('hidden', n===0)
-    document.getElementById('tab-login').classList.toggle('border-b-2', n===0)
-    document.getElementById('tab-signup').classList.toggle('border-b-2', n===1)
-}
-
-// Navigation
-function navigateTo(page) {
-    document.getElementById('landing').classList.add('hidden')
-    document.getElementById('dashboard-section').classList.remove('hidden')
+    document.getElementById('dashboard').classList.remove('hidden')
     renderAccounts()
 }
 
-// Chatbot
-let chatHistory = []
-const botResponses = {
-    "buy": "To buy an account: 1) Choose account size 2) Pay USDT on selected chain 3) After payment you get MT4 credentials instantly.",
-    "withdraw": "Withdrawal process: Reach profit target → Request payout in dashboard → 80% profit transferred within 24 hours via same chain.",
-    "rules": "Daily loss limit 5%, Max drawdown 10%, No weekend holding on news, 80/20 profit split.",
-    "how": "1. Buy account → 2. Login MT4 → 3. Trade → 4. Withdraw profits. Everything is explained in dashboard.",
-    default: "Hi! I know all rules of Your Funded Account. Ask me anything about buying, withdrawal, rules, certificate or payment."
+function fakeLogin() { hideAuthModal(); document.getElementById('dashboard').classList.remove('hidden'); renderAccounts() }
+function fakeSignup() { hideAuthModal(); document.getElementById('dashboard').classList.remove('hidden'); renderAccounts() }
+
+function showSection(section) {
+    if (section === 'buy') renderAccounts()
 }
 
+// Chatbot
 function toggleChat() {
     const win = document.getElementById('chat-window')
     win.classList.toggle('hidden')
-    if(chatHistory.length === 0) {
-        addBotMessage("Hello Kaptan! I'm your AI support bot. How can I help you with your funded account today?")
+    if (win.classList.contains('hidden') === false && document.getElementById('chat-body').children.length === 0) {
+        addBotMsg("Namaste Kaptan! Main aapka support bot hoon. Rules, account buying, withdrawal ya koi bhi sawal poochho.")
     }
 }
 
-function addBotMessage(text) {
-    const msgDiv = document.createElement('div')
-    msgDiv.className = 'bg-zinc-800 rounded-2xl p-4 max-w-[80%]'
-    msgDiv.innerHTML = `<p>${text}</p>`
-    document.getElementById('chat-messages').appendChild(msgDiv)
-    msgDiv.scrollIntoView()
+function addBotMsg(msg) {
+    const div = document.createElement('div')
+    div.className = "bg-zinc-800 rounded-2xl p-4"
+    div.innerHTML = msg
+    document.getElementById('chat-body').appendChild(div)
+    div.scrollIntoView({behavior: "smooth"})
 }
 
-function sendChat() {
+function sendMessage() {
     const input = document.getElementById('chat-input')
-    const text = input.value.trim().toLowerCase()
-    if(!text) return
+    if (!input.value.trim()) return
+    addBotMsg(`<span class="text-emerald-400">You:</span> ${input.value}`)
     
-    // User message
-    const userDiv = document.createElement('div')
-    userDiv.className = 'bg-green-500 text-black rounded-2xl p-4 max-w-[80%] ml-auto'
-    userDiv.innerHTML = `<p>${input.value}</p>`
-    document.getElementById('chat-messages').appendChild(userDiv)
+    setTimeout(() => {
+        let reply = "Samajh gaya. Payment ke liye sirf USDT accept karte hain. Rules follow karo to payout fast milega."
+        if (input.value.toLowerCase().includes('rule')) reply = "Daily loss 5%, Max drawdown 10%. News trading allowed with caution."
+        if (input.value.toLowerCase().includes('withdraw')) reply = "Profit target hit karo → Dashboard se request → 24 ghante mein USDT payout."
+        addBotMsg(`<span class="text-emerald-400">Bot:</span> ${reply}`)
+    }, 700)
     
     input.value = ''
-    
-    // Bot reply
-    setTimeout(() => {
-        let reply = botResponses.default
-        if(text.includes('buy') || text.includes('account')) reply = botResponses.buy
-        else if(text.includes('withdraw') || text.includes('payout')) reply = botResponses.withdraw
-        else if(text.includes('rule') || text.includes('limit')) reply = botResponses.rules
-        else if(text.includes('how') || text.includes('use')) reply = botResponses.how
-        
-        addBotMessage(reply)
-    }, 800)
 }
 
-// Auto animate counters
-function animateCounters() {
-    let c = 12458
-    setInterval(() => { document.getElementById('funded-count').textContent = (c += Math.floor(Math.random()*7)+3) }, 2000)
-}
-animateCounters()
-
-// Initial load
-console.log('%c✅ Your Funded Account website loaded perfectly!', 'color:#22c55e; font-size:18px')
+// Init
+console.log("%cV2 Loaded - Better Neon Pro Version", "color:#22ff88; font-size:16px")
 </script>
 </body>
 </html>
