@@ -1,658 +1,419 @@
-  <!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Your Funded Account | Pro Trading Platform</title>
-    <!-- Google Fonts & Font Awesome -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Chart.js for animated graphs (pro touch) -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Funded Account</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .hero-bg {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            animation: gradientShift 15s ease infinite;
         }
-
-        body {
-            background: linear-gradient(145deg, #0a0f1e 0%, #0c1222 100%);
-            color: #eef5ff;
-            overflow-x: hidden;
-        }
-
-        /* animated gradient orb */
-        .orb {
-            position: fixed;
-            width: 60vw;
-            height: 60vw;
-            background: radial-gradient(circle, rgba(79, 172, 254, 0.2) 0%, rgba(0, 34, 68, 0) 70%);
-            border-radius: 50%;
-            filter: blur(80px);
-            z-index: 0;
-            animation: floatOrb 18s infinite alternate;
-        }
-
-        @keyframes floatOrb {
-            0% { transform: translate(-10%, -10%) scale(1); opacity: 0.4; }
-            100% { transform: translate(15%, 15%) scale(1.3); opacity: 0.7; }
-        }
-
-        .container {
-            position: relative;
-            z-index: 2;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 1.5rem;
-        }
-
-        /* navbar + social media row */
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            background: rgba(15, 25, 45, 0.65);
-            backdrop-filter: blur(12px);
-            border-radius: 2rem;
-            padding: 0.8rem 2rem;
-            border: 1px solid rgba(72, 187, 255, 0.2);
-            margin-bottom: 2rem;
-        }
-
-        .logo h1 {
-            font-size: 1.9rem;
-            background: linear-gradient(135deg, #FFFFFF, #4fb0ff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: -0.5px;
-        }
-
-        .social-icons a {
-            color: #ccdeff;
-            font-size: 1.5rem;
-            margin-left: 1.2rem;
-            transition: 0.2s;
-        }
-
-        .social-icons a:hover { color: #4fb0ff; transform: translateY(-3px); }
-
-        /* hero section with moving anime style images */
-        .hero {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(10, 20, 35, 0.5);
-            border-radius: 2.5rem;
-            padding: 2rem;
-            backdrop-filter: blur(4px);
-            margin-bottom: 3rem;
-            border: 1px solid rgba(79, 176, 255, 0.3);
-        }
-
-        .hero-text {
-            flex: 1;
-        }
-
-        .hero-text h2 {
-            font-size: 3rem;
-            font-weight: 800;
-            background: linear-gradient(to right, #fff, #7bc5ff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .anime-strip {
-            flex: 1;
-            display: flex;
-            gap: 1.5rem;
-            overflow-x: auto;
-            padding: 1rem;
-            mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
-        }
-
-        .anime-card {
-            min-width: 110px;
-            height: 110px;
-            background: linear-gradient(145deg, #1e2a44, #0f172f);
-            border-radius: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3.5rem;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            animation: slideAnime 14s infinite alternate;
-            border: 1px solid #4fb0ff40;
-        }
-
-        @keyframes slideAnime {
-            0% { transform: translateX(0px) rotate(0deg); }
-            100% { transform: translateX(15px) rotate(2deg); }
-        }
-
-        .btn-get {
-            background: linear-gradient(95deg, #2b6ef0, #0f3f9e);
-            border: none;
-            padding: 1rem 2.5rem;
-            font-size: 1.2rem;
-            font-weight: bold;
-            border-radius: 3rem;
-            color: white;
-            cursor: pointer;
-            margin-top: 1.5rem;
-            transition: 0.2s;
-            box-shadow: 0 5px 15px #2b6ef070;
-        }
-
-        .btn-get:hover { transform: scale(1.02); background: #1e5ad9; }
-
-        /* dashboard preview cards */
-        .rules-section {
-            background: #0b1120cc;
-            border-radius: 2rem;
-            padding: 1.5rem;
-            margin: 2rem 0;
-            backdrop-filter: blur(8px);
-        }
-
-        .grid-cards {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .card {
-            background: #111a2be0;
-            border-radius: 1.5rem;
-            padding: 1.5rem;
-            flex: 1;
-            min-width: 220px;
-            border: 1px solid #2d4379;
-            transition: 0.2s;
-        }
-
-        .badge {
-            background: #1f3a6b;
-            border-radius: 2rem;
-            padding: 0.2rem 1rem;
-            font-size: 0.8rem;
-            display: inline-block;
-        }
-
-        /* modal styling */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background: #0e1628;
-            max-width: 500px;
-            width: 90%;
-            border-radius: 2rem;
-            padding: 2rem;
-            border: 1px solid #4fb0ff;
-            position: relative;
-        }
-
-        .toggle-btns {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .toggle-btn {
-            background: #1f2a48;
-            padding: 0.6rem 1.5rem;
-            border-radius: 2rem;
-            cursor: pointer;
-            text-align: center;
-            flex: 1;
-        }
-
-        .active-toggle {
-            background: #2b6ef0;
-            box-shadow: 0 0 8px #2b6ef0;
-        }
-
-        input, textarea {
-            width: 100%;
-            padding: 0.8rem;
-            margin: 0.8rem 0;
-            background: #010a1a;
-            border: 1px solid #2e4980;
-            border-radius: 1rem;
-            color: white;
-        }
-
-        .agree-row {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin: 1rem 0;
-        }
-
-        /* buy dashboard */
-        .dashboard-view {
-            display: none;
-            background: #0c1222;
-            padding: 1.5rem;
-            border-radius: 2rem;
-        }
-
-        .account-option {
-            background: #131d31;
-            border-radius: 1rem;
-            padding: 1rem;
-            margin: 1rem 0;
-            cursor: pointer;
-            transition: 0.1s;
-        }
-
-        .selected-account {
-            border: 2px solid #4fb0ff;
-            background: #1a2a4a;
-        }
-
-        .chain-select {
-            display: flex;
-            gap: 1rem;
-            margin: 1rem 0;
-        }
-
-        .chain-btn {
-            background: #1f2f4a;
-            padding: 0.6rem;
-            border-radius: 2rem;
-            flex: 1;
-            text-align: center;
-            cursor: pointer;
-        }
-
-        .active-chain {
-            background: #2b6ef0;
-        }
-
-        .timer-box {
-            background: black;
-            padding: 1rem;
-            border-radius: 1rem;
-            text-align: center;
-            font-family: monospace;
-            font-size: 2rem;
-            letter-spacing: 4px;
-        }
-
-        /* chatbot */
-        .chatbot-icon {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background: #2b6ef0;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            z-index: 200;
-        }
-
-        .chat-window {
-            position: fixed;
-            bottom: 100px;
-            right: 25px;
-            width: 340px;
-            background: #0f172fe6;
-            backdrop-filter: blur(12px);
-            border-radius: 1.5rem;
-            border: 1px solid #4fb0ff;
-            display: none;
-            flex-direction: column;
-            z-index: 210;
-            overflow: hidden;
-        }
-
-        .chat-header {
-            background: #1f3a6b;
-            padding: 0.8rem;
-            font-weight: bold;
-        }
-
-        .chat-messages {
-            height: 280px;
-            overflow-y: auto;
-            padding: 0.8rem;
-            font-size: 0.85rem;
-        }
-
-        .chat-input-area {
-            display: flex;
-            border-top: 1px solid #2e4980;
-        }
-
-        .chat-input-area input {
-            flex: 1;
-            margin: 0;
-            border-radius: 0;
-            border: none;
-        }
-
-        /* misc */
-        .hidden { display: none; }
-        button { cursor: pointer; }
-        hr { border-color: #2e4980; margin: 1rem 0; }
+        @keyframes gradientShift { 0% {background-position:0% 50%} 50% {background-position:100% 50%} 100% {background-position:0% 50%} }
+        .trading-bar { animation: tradeMove 4s linear infinite; }
+        .neon-text { text-shadow: 0 0 20px #22c55e, 0 0 40px #22c55e; }
     </style>
 </head>
-<body>
-<div class="orb" style="top:-20%; left:-10%;"></div>
-<div class="orb" style="bottom:-20%; right:-10%; width:50vw; height:50vw;"></div>
-<div class="container">
-    <div class="top-bar">
-        <div class="logo"><h1>⚡ YOUR FUNDED ACCOUNT</h1></div>
-        <div class="social-icons">
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-facebook-f"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-discord"></i></a>
-        </div>
-    </div>
-    <div class="hero">
-        <div class="hero-text">
-            <h2>Trade like a Legend<br>Get Funded up to $200k</h2>
-            <button class="btn-get" id="mainGetStartedBtn">🚀 Get Started</button>
-        </div>
-        <div class="anime-strip">
-            <div class="anime-card">⚔️</div>
-            <div class="anime-card">🎴</div>
-            <div class="anime-card">🗡️</div>
-            <div class="anime-card">🌀</div>
-            <div class="anime-card">🔥</div>
-        </div>
-    </div>
+<body class="bg-black text-white">
 
-    <!-- Rules Explanation + Dashboard preview -->
-    <div class="rules-section">
-        <h3><i class="fas fa-shield-alt"></i> Platform Rules & Guide</h3>
-        <div class="grid-cards">
-            <div class="card"><i class="fas fa-chart-line"></i> <strong>Daily Drawdown Limit:</strong> 5% Max <br> <span class="badge">Risk Control</span></div>
-            <div class="card"><i class="fas fa-chart-simple"></i> <strong>Max Daily Loss:</strong> 4% <br> <span class="badge">Strict discipline</span></div>
-            <div class="card"><i class="fas fa-dollar-sign"></i> <strong>Account Sizes:</strong> $5k / $10k / $25k / $50k</div>
-            <div class="card"><i class="fas fa-clock"></i> <strong>Profit Split:</strong> 90/10 | Withdrawals every 14 days</div>
+<!-- NAVBAR -->
+<nav class="bg-zinc-950 border-b border-zinc-800 fixed w-full z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-green-500 rounded-2xl flex items-center justify-center text-2xl font-bold">📈</div>
+            <h1 class="text-3xl font-bold tracking-tighter neon-text">Your Funded Account</h1>
         </div>
-        <div><i class="fas fa-info-circle"></i> <strong>How to use:</strong> Register → Select account → Pay with USDT → Receive login credentials → Start trading on funded dashboard.</div>
-        <div><i class="fas fa-wallet"></i> <strong>How to withdraw:</strong> Go to dashboard → Request withdrawal → 1-step verification + certificate. Support bot helps 24/7.</div>
-    </div>
+        
+        <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+            <a href="#" onclick="navigateTo('dashboard')" class="hover:text-green-400">Dashboard</a>
+            <a href="#" onclick="navigateTo('howto')" class="hover:text-green-400">How it Works</a>
+            <a href="#" onclick="navigateTo('accounts')" class="hover:text-green-400">Accounts</a>
+            <a href="#" class="hover:text-green-400">Rules</a>
+        </div>
 
-    <!-- Dashboard after login -->
-    <div id="userDashboard" class="dashboard-view">
-        <h2>📊 Trader's Dashboard</h2>
-        <div class="grid-cards">
-            <div class="card">💰 Account Balance: <span id="demoBalance">$0</span><br>📉 Daily Loss: 0% / 5%</div>
-            <div class="card">🎯 Funded Status: Active <br> 🔒 Max Drawdown: -4%</div>
+        <div class="flex items-center gap-4">
+            <a href="https://instagram.com" target="_blank" class="text-zinc-400 hover:text-white"><i class="fab fa-instagram text-xl"></i></a>
+            <a href="https://facebook.com" target="_blank" class="text-zinc-400 hover:text-white"><i class="fab fa-facebook text-xl"></i></a>
+            <a href="https://twitter.com" target="_blank" class="text-zinc-400 hover:text-white"><i class="fab fa-x-twitter text-xl"></i></a>
+            <button onclick="showAuthModal()" class="bg-green-500 hover:bg-green-600 px-6 py-2.5 rounded-2xl font-semibold text-sm">Get Started</button>
         </div>
-        <h3>Buy Funded Account</h3>
-        <div id="accountList"></div>
-        <div id="cryptoPaymentSection" class="hidden">
-            <h4>Payment with USDT</h4>
-            <div class="chain-select" id="chainSelectDiv">
-                <div class="chain-btn" data-chain="BEP20">BEP20</div>
-                <div class="chain-btn" data-chain="ERC20">ERC20</div>
-                <div class="chain-btn" data-chain="TRC20">TRC20</div>
+    </div>
+</nav>
+
+<!-- HERO LANDING -->
+<section id="landing" class="hero-bg min-h-screen flex items-center pt-20">
+    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+        <div class="space-y-8">
+            <h1 class="text-6xl md:text-7xl font-bold leading-none tracking-tighter neon-text">
+                TRADE WITH<br>YOUR FUNDED<br>ACCOUNT
+            </h1>
+            <p class="text-2xl text-zinc-400">Instant funded trading accounts. No risk. Real profits.</p>
+            
+            <div class="flex items-center gap-4">
+                <button onclick="showAuthModal()" 
+                        class="bg-green-500 hover:bg-green-600 text-black px-10 py-5 rounded-3xl text-xl font-semibold flex items-center gap-3">
+                    <span>Get Started Now</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+                <div class="text-sm text-zinc-500">Trusted by 12,458 traders</div>
             </div>
-            <div id="selectedChainAddress"></div>
-            <button id="buyNowBtn" class="btn-get" style="padding:0.8rem">Buy Now</button>
-            <div id="paymentTimer" class="timer-box hidden"></div>
-            <button id="cancelPaymentBtn" class="hidden" style="background:gray">Cancel</button>
+
+            <!-- Animated trading stats -->
+            <div class="flex gap-8 text-sm">
+                <div><span class="block text-green-400 text-4xl font-bold" id="funded-count">12458</span> Funded Accounts</div>
+                <div><span class="block text-green-400 text-4xl font-bold" id="payout-count">$2.8M</span> Paid Out</div>
+                <div><span class="block text-green-400 text-4xl font-bold" id="live-traders">847</span> Trading Live</div>
+            </div>
         </div>
-        <hr>
-        <div><i class="fas fa-trophy"></i> Withdrawal certificate & 1-step verification ready. Contact chatbot.</div>
+
+        <div class="relative">
+            <div class="bg-zinc-900/70 backdrop-blur-xl border border-green-500/30 rounded-3xl p-8 shadow-2xl">
+                <div class="h-80 flex items-center justify-center text-8xl animate-pulse">📊</div>
+                <div class="text-center text-green-400 font-medium text-xl mt-6">Live Market • BTC +2.4% • EURUSD +0.8%</div>
+                <div class="mt-6 grid grid-cols-3 gap-4 text-center text-xs">
+                    <div class="bg-zinc-800 rounded-2xl py-3">Daily Loss Limit<br><span class="text-green-400">5%</span></div>
+                    <div class="bg-zinc-800 rounded-2xl py-3">Max Drawdown<br><span class="text-green-400">10%</span></div>
+                    <div class="bg-zinc-800 rounded-2xl py-3">Profit Split<br><span class="text-green-400">80/20</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- DASHBOARD + BUY SECTION (hidden initially) -->
+<section id="dashboard-section" class="hidden min-h-screen bg-zinc-950 pt-20">
+    <div class="max-w-7xl mx-auto px-6">
+        <h2 class="text-4xl font-bold mb-8">Welcome back, Kaptan 👋</h2>
+        
+        <!-- Buy Accounts -->
+        <div class="mb-12">
+            <h3 class="text-2xl font-semibold mb-6">Buy Funded Account</h3>
+            <div class="grid md:grid-cols-3 gap-6" id="accounts-grid">
+                <!-- JS se dynamically fill hoga -->
+            </div>
+        </div>
+
+        <!-- How to Use -->
+        <div id="howto" class="bg-zinc-900 rounded-3xl p-8 mb-12">
+            <h3 class="text-2xl font-semibold mb-6">How to Use Your Funded Account</h3>
+            <div class="grid md:grid-cols-3 gap-6 text-sm">
+                <div><strong>1. Buy Account</strong><br>USDT me payment karo → Instant credentials milenge</div>
+                <div><strong>2. Trade</strong><br>MT4/MT5 pe login karo, rules follow karo</div>
+                <div><strong>3. Withdraw Profits</strong><br>80% profit apna, request karo 24 ghante mein payout</div>
+            </div>
+        </div>
+
+        <div class="text-center text-zinc-500 text-sm">Full rules, withdrawal process, aur certificate sab chatbot mein mil jaayega</div>
+    </div>
+</section>
+
+<!-- AUTH MODAL -->
+<div id="auth-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[100]">
+    <div class="bg-zinc-900 rounded-3xl w-full max-w-md mx-4 p-8">
+        <h2 id="modal-title" class="text-3xl font-bold mb-6 text-center">Get Started</h2>
+        
+        <div class="flex border-b mb-6">
+            <button onclick="switchTab(0)" id="tab-login" class="flex-1 py-3 font-medium border-b-2 border-green-500">Login</button>
+            <button onclick="switchTab(1)" id="tab-signup" class="flex-1 py-3 font-medium">Sign Up</button>
+        </div>
+
+        <div id="login-form">
+            <input type="email" id="login-email" placeholder="Email" class="w-full bg-zinc-800 rounded-2xl px-6 py-4 mb-4">
+            <input type="password" id="login-pass" placeholder="Password" class="w-full bg-zinc-800 rounded-2xl px-6 py-4 mb-4">
+            <label class="flex items-center gap-2 text-sm mb-6">
+                <input type="checkbox" class="accent-green-500" checked> I accept all rules & terms
+            </label>
+            <button onclick="fakeLogin()" class="w-full bg-green-500 hover:bg-green-600 text-black py-4 rounded-3xl font-semibold">Login</button>
+        </div>
+
+        <div id="signup-form" class="hidden">
+            <input type="text" id="signup-name" placeholder="Full Name" class="w-full bg-zinc-800 rounded-2xl px-6 py-4 mb-4">
+            <input type="email" id="signup-email" placeholder="Email" class="w-full bg-zinc-800 rounded-2xl px-6 py-4 mb-4">
+            <input type="password" id="signup-pass" placeholder="Password" class="w-full bg-zinc-800 rounded-2xl px-6 py-4 mb-4">
+            <label class="flex items-center gap-2 text-sm mb-6">
+                <input type="checkbox" id="terms-check" class="accent-green-500"> I accept all rules & terms
+            </label>
+            <button onclick="fakeSignup()" class="w-full bg-green-500 hover:bg-green-600 text-black py-4 rounded-3xl font-semibold">Create Account</button>
+        </div>
+        
+        <button onclick="hideAuthModal()" class="w-full mt-4 text-zinc-400">Close</button>
     </div>
 </div>
 
-<!-- Login/Signup Modal -->
-<div id="authModal" class="modal">
-    <div class="modal-content">
-        <span style="float:right; font-size:1.8rem; cursor:pointer;" id="closeModal">&times;</span>
-        <div class="toggle-btns">
-            <div id="loginToggle" class="toggle-btn active-toggle">Login</div>
-            <div id="signupToggle" class="toggle-btn">Signup</div>
+<!-- PAYMENT MODAL -->
+<div id="payment-modal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-[200]">
+    <div class="bg-zinc-900 rounded-3xl w-full max-w-lg mx-4 p-8">
+        <h3 class="text-2xl font-bold mb-6">Complete Payment</h3>
+        
+        <div id="payment-details" class="space-y-6"></div>
+
+        <div class="mt-8 flex justify-between">
+            <button onclick="cancelPayment()" class="px-8 py-3 text-red-400 hover:bg-red-950 rounded-2xl">Cancel</button>
+            <button onclick="startTimer()" id="buy-now-btn" class="bg-green-500 hover:bg-green-600 px-10 py-3 rounded-2xl font-semibold">Buy Now</button>
         </div>
-        <div id="loginForm">
-            <input type="text" id="loginEmail" placeholder="Email / Username">
-            <input type="password" id="loginPass" placeholder="Password">
-            <div class="agree-row"><input type="checkbox" id="loginAgree"> <label>I agree to Terms & Agreement Rules</label></div>
-            <button id="doLoginBtn" class="btn-get" style="width:100%">Access Dashboard</button>
-        </div>
-        <div id="signupForm" class="hidden">
-            <input type="text" id="signupName" placeholder="Full Name">
-            <input type="email" id="signupEmail" placeholder="Email">
-            <input type="password" id="signupPass" placeholder="Password">
-            <div class="agree-row"><input type="checkbox" id="signupAgree"> <label>Accept Funding Rules & Agreement</label></div>
-            <button id="doSignupBtn" class="btn-get" style="width:100%">Create Account</button>
+
+        <!-- Countdown -->
+        <div id="countdown-area" class="hidden mt-8 text-center">
+            <p class="text-sm text-zinc-400 mb-2">Payment window closes in</p>
+            <div id="timer" class="text-5xl font-mono font-bold text-green-400">59:59</div>
         </div>
     </div>
 </div>
 
-<!-- ChatBot -->
-<div class="chatbot-icon" id="chatbotIcon"><i class="fas fa-robot"></i></div>
-<div class="chat-window" id="chatWindow">
-    <div class="chat-header">🤖 Funded Assistant (knows all rules)</div>
-    <div class="chat-messages" id="chatMsgs"><div>Bot: Hello! Ask me about account rules, drawdown, withdrawal, or how to buy account.</div></div>
-    <div class="chat-input-area"><input id="chatInput" placeholder="Ask something..."><button id="sendChatBtn">➤</button></div>
+<!-- CHATBOT -->
+<div onclick="toggleChat()" class="fixed bottom-8 right-8 w-14 h-14 bg-green-500 hover:bg-green-600 rounded-2xl flex items-center justify-center shadow-2xl cursor-pointer z-[300]">
+    <i class="fas fa-robot text-3xl"></i>
+</div>
+
+<div id="chat-window" class="hidden fixed bottom-28 right-8 w-96 bg-zinc-900 rounded-3xl shadow-2xl overflow-hidden z-[300]">
+    <div class="bg-green-500 text-black px-6 py-4 font-semibold flex justify-between">
+        <span>Customer Support Bot</span>
+        <span onclick="toggleChat()" class="cursor-pointer">✕</span>
+    </div>
+    <div id="chat-messages" class="h-96 p-4 overflow-y-auto space-y-4 text-sm"></div>
+    <div class="p-4 border-t">
+        <input id="chat-input" placeholder="Type your question..." 
+               class="w-full bg-zinc-800 rounded-2xl px-5 py-3 text-sm" onkeypress="if(event.key==='Enter') sendChat()">
+    </div>
 </div>
 
 <script>
-    // App state
-    let isLoggedIn = false;
-    let currentUser = null;
-    let selectedAccountObj = null;
-    let selectedChain = "BEP20";
-    let activeTimerInterval = null;
-    let timerSeconds = 3600; // 1 hour
-    let awaitingPayment = false;
-    let currentAddress = "";
+// Tailwind script
+function initTailwind() {
+    tailwind.config = { content: ["*"], theme: { extend: {} } }
+}
+initTailwind()
 
-    const addresses = {
-        BEP20: "0x8e57d705f1b58ceda77c91df6ac80aac5c2a83df",
-        ERC20: "0x8e57d705f1b58ceda77c91df6ac80aac5c2a83df",
-        TRC20: "TN9DDuzXnXirgAAS4mRe8VFQ6VxuVUQmJc"
-    };
+// Sample accounts
+const accounts = [
+    { id:1, name:"Starter", size:5000, price:49, daily:"5%", maxdd:"10%", split:"80/20" },
+    { id:2, name:"Pro", size:10000, price:89, daily:"5%", maxdd:"10%", split:"80/20" },
+    { id:3, name:"Elite", size:25000, price:199, daily:"5%", maxdd:"10%", split:"80/20" },
+    { id:4, name:"Master", size:50000, price:349, daily:"5%", maxdd:"10%", split:"80/20" }
+]
 
-    const accountsData = [
-        { size: "$5,000", price: "100 USDT", maxDrawdown: "4%", dailyLoss: "5%" },
-        { size: "$10,000", price: "180 USDT", maxDrawdown: "4%", dailyLoss: "5%" },
-        { size: "$25,000", price: "400 USDT", maxDrawdown: "4%", dailyLoss: "5%" },
-        { size: "$50,000", price: "750 USDT", maxDrawdown: "4%", dailyLoss: "5%" }
-    ];
+let selectedAccount = null
+let selectedChain = null
+let timerInterval = null
 
-    function renderAccountOptions() {
-        const container = document.getElementById("accountList");
-        if(!container) return;
-        container.innerHTML = "";
-        accountsData.forEach((acc, idx) => {
-            const div = document.createElement("div");
-            div.className = "account-option";
-            if(selectedAccountObj && selectedAccountObj.size === acc.size) div.classList.add("selected-account");
-            div.innerHTML = `<strong>${acc.size}</strong> | Price: ${acc.price} | Daily Loss ${acc.dailyLoss} | DD ${acc.maxDrawdown}<br><small>Click to select</small>`;
-            div.onclick = () => {
-                selectedAccountObj = acc;
-                renderAccountOptions();
-                document.getElementById("cryptoPaymentSection").classList.remove("hidden");
-            };
-            container.appendChild(div);
-        });
-    }
+// Render accounts
+function renderAccounts() {
+    const grid = document.getElementById('accounts-grid')
+    grid.innerHTML = accounts.map(acc => `
+        <div onclick="selectAccount(${acc.id})" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 hover:border-green-500 rounded-3xl p-6 cursor-pointer transition-all">
+            <div class="flex justify-between">
+                <div>
+                    <div class="font-bold text-xl">${acc.name}</div>
+                    <div class="text-3xl font-mono">\[ {acc.size.toLocaleString()}</div>
+                </div>
+                <div class="text-right">
+                    <div class="text-green-400 text-3xl font-bold"> \]{acc.price}</div>
+                    <div class="text-xs text-zinc-400">USDT</div>
+                </div>
+            </div>
+            <div class="mt-6 grid grid-cols-3 gap-2 text-xs">
+                <div>Daily Loss<br><span class="text-green-400">${acc.daily}</span></div>
+                <div>Max DD<br><span class="text-green-400">${acc.maxdd}</span></div>
+                <div>Profit Split<br><span class="text-green-400">${acc.split}</span></div>
+            </div>
+        </div>
+    `).join('')
+}
 
-    function updateChainUI() {
-        document.querySelectorAll(".chain-btn").forEach(btn => {
-            if(btn.getAttribute("data-chain") === selectedChain) btn.classList.add("active-chain");
-            else btn.classList.remove("active-chain");
-        });
-        const addrDiv = document.getElementById("selectedChainAddress");
-        if(addrDiv) addrDiv.innerHTML = `<div class="card"><i class="fab fa-bitcoin"></i> ${selectedChain} Address:<br><strong>${addresses[selectedChain]}</strong><br>Send exact USDT amount: ${selectedAccountObj?.price || "N/A"}</div>`;
-    }
+// Select account
+function selectAccount(id) {
+    selectedAccount = accounts.find(a => a.id === id)
+    if (!selectedAccount) return
+    
+    const html = `
+        <div class="flex justify-between items-center">
+            <div>
+                <h4 class="font-semibold">${selectedAccount.name} Account</h4>
+                <p class="text-4xl font-mono">\[ {selectedAccount.size}</p>
+            </div>
+            <div class="text-right">
+                <p class="text-green-400 text-5xl font-bold"> \]{selectedAccount.price}</p>
+                <p class="text-xs text-zinc-400">USDT only • Crypto payment</p>
+            </div>
+        </div>
+        
+        <div class="mt-8">
+            <p class="text-sm mb-3">Select Chain</p>
+            <div class="grid grid-cols-3 gap-3">
+                <button onclick="chooseChain('BEP20')" class="chain-btn border border-zinc-700 hover:border-yellow-400 rounded-2xl py-4 text-center">BEP20 (BNB)</button>
+                <button onclick="chooseChain('ERC20')" class="chain-btn border border-zinc-700 hover:border-blue-400 rounded-2xl py-4 text-center">ERC20 (ETH)</button>
+                <button onclick="chooseChain('TRC20')" class="chain-btn border border-zinc-700 hover:border-red-400 rounded-2xl py-4 text-center">TRC20 (TRON)</button>
+            </div>
+        </div>
+    `
+    document.getElementById('payment-details').innerHTML = html
+    document.getElementById('payment-modal').classList.remove('hidden')
+    document.getElementById('buy-now-btn').onclick = () => { if(selectedChain) startTimer() }
+}
 
-    // Timer logic
-    function startTimer() {
-        if(activeTimerInterval) clearInterval(activeTimerInterval);
-        timerSeconds = 3600;
-        const timerDiv = document.getElementById("paymentTimer");
-        const cancelBtn = document.getElementById("cancelPaymentBtn");
-        timerDiv.classList.remove("hidden");
-        cancelBtn.classList.remove("hidden");
-        activeTimerInterval = setInterval(() => {
-            if(timerSeconds <= 0) {
-                clearInterval(activeTimerInterval);
-                timerDiv.innerHTML = "⏰ Time expired! Transaction cancelled.";
-                awaitingPayment = false;
-                cancelBtn.classList.add("hidden");
-            } else {
-                timerSeconds--;
-                let mins = Math.floor(timerSeconds / 60);
-                let secs = timerSeconds % 60;
-                timerDiv.innerHTML = `⏳ Payment Window: ${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')} | Send exactly ${selectedAccountObj?.price} USDT to above address`;
-            }
-        }, 1000);
-    }
+// Choose chain
+function chooseChain(chain) {
+    selectedChain = chain
+    document.querySelectorAll('.chain-btn').forEach(b => b.classList.remove('border-green-500', 'bg-green-900/30'))
+    event.target.classList.add('border-green-500', 'bg-green-900/30')
+}
 
-    function resetPaymentUI() {
-        if(activeTimerInterval) clearInterval(activeTimerInterval);
-        awaitingPayment = false;
-        document.getElementById("paymentTimer").classList.add("hidden");
-        document.getElementById("cancelPaymentBtn").classList.add("hidden");
-    }
-
-    document.getElementById("buyNowBtn")?.addEventListener("click", () => {
-        if(!selectedAccountObj) { alert("Select an account first!"); return; }
-        if(!selectedChain) { alert("Select chain"); return; }
-        awaitingPayment = true;
-        startTimer();
-        alert(`Payment initiated. Send ${selectedAccountObj.price} USDT via ${selectedChain} to:\n${addresses[selectedChain]}\nAuto-verification after 1 block. Our bot will notify.`);
-    });
-
-    document.getElementById("cancelPaymentBtn")?.addEventListener("click", () => {
-        resetPaymentUI();
-        alert("Payment cancelled");
-        awaitingPayment = false;
-    });
-
-    // Chain selection
-    document.querySelectorAll(".chain-btn").forEach(btn => {
-        btn.addEventListener("click", (e) => {
-            selectedChain = btn.getAttribute("data-chain");
-            updateChainUI();
-        });
-    });
-
-    // Auth logic
-    const authModal = document.getElementById("authModal");
-    const mainGetStarted = document.getElementById("mainGetStartedBtn");
-    mainGetStarted.onclick = () => { authModal.style.display = "flex"; };
-    document.getElementById("closeModal").onclick = () => { authModal.style.display = "none"; };
-
-    function fakeLogin(email) {
-        isLoggedIn = true;
-        currentUser = { email: email, balance: 25000 };
-        document.getElementById("demoBalance").innerText = "$" + currentUser.balance;
-        document.getElementById("userDashboard").style.display = "block";
-        authModal.style.display = "none";
-        renderAccountOptions();
-        alert("Welcome to Your Funded Account! Explore dashboard & buy account.");
-    }
-
-    document.getElementById("doLoginBtn").onclick = () => {
-        let email = document.getElementById("loginEmail").value;
-        let pass = document.getElementById("loginPass").value;
-        let agreed = document.getElementById("loginAgree").checked;
-        if(!agreed) { alert("You must accept the agreement rules"); return; }
-        if(email && pass) fakeLogin(email);
-        else alert("Enter credentials");
-    };
-    document.getElementById("doSignupBtn").onclick = () => {
-        let name = document.getElementById("signupName").value;
-        let email = document.getElementById("signupEmail").value;
-        let pass = document.getElementById("signupPass").value;
-        let agreed = document.getElementById("signupAgree").checked;
-        if(!agreed) { alert("Accept the agreement to continue"); return; }
-        if(name && email && pass) fakeLogin(email);
-        else alert("Fill all fields");
-    };
-    // Toggle forms
-    document.getElementById("loginToggle").onclick = () => {
-        document.getElementById("loginForm").classList.remove("hidden");
-        document.getElementById("signupForm").classList.add("hidden");
-        document.getElementById("loginToggle").classList.add("active-toggle");
-        document.getElementById("signupToggle").classList.remove("active-toggle");
-    };
-    document.getElementById("signupToggle").onclick = () => {
-        document.getElementById("signupForm").classList.remove("hidden");
-        document.getElementById("loginForm").classList.add("hidden");
-        document.getElementById("signupToggle").classList.add("active-toggle");
-        document.getElementById("loginToggle").classList.remove("active-toggle");
-    };
-    // Chatbot (Rule aware)
-    const chatMessages = document.getElementById("chatMsgs");
-    function addBotMessage(msg) {
-        let div = document.createElement("div");
-        div.innerHTML = `<strong>🤖 Bot:</strong> ${msg}`;
-        chatMessages.appendChild(div);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-    function processChat(userMsg) {
-        let lower = userMsg.toLowerCase();
-        if(lower.includes("drawdown") || lower.includes("daily loss")) {
-            addBotMessage("Maximum daily drawdown limit is 5% and max loss per day is 4%. Strict risk rules applied.");
-        } else if(lower.includes("withdraw")) {
-            addBotMessage("To withdraw: go to Dashboard → Withdrawal → complete 1-step verification & sign certificate. Minimum 14 days active trading. Contact support for certificate.");
-        } else if(lower.includes("buy account") || lower.includes("purchase")) {
-            addBotMessage("Select account size from dashboard, pay with USDT via BEP20/ERC20/TRC20, after payment confirmation credentials are issued.");
-        } else if(lower.includes("rule")) {
-            addBotMessage("Rules: Max daily loss 4%, max drawdown 5%, profit split 90%, withdrawal after 2 weeks, mandatory agreement.");
-        } else if(lower.includes("certificate")) {
-            addBotMessage("Withdrawal requires a signed certificate (digital) and 2-step verification for security.");
-        } else {
-            addBotMessage("I know all platform rules: daily loss limit, max drawdown, account buying steps, withdrawal certificate & 1-step verification. Ask me anything!");
+// Start timer
+function startTimer() {
+    document.getElementById('countdown-area').classList.remove('hidden')
+    let time = 3600 // 1 hour
+    if(timerInterval) clearInterval(timerInterval)
+    
+    timerInterval = setInterval(() => {
+        time--
+        const min = Math.floor(time/60)
+        const sec = time % 60
+        document.getElementById('timer').textContent = `\( {min}: \){sec < 10 ? '0' : ''}${sec}`
+        
+        if(time <= 0) {
+            clearInterval(timerInterval)
+            alert("⏰ Time's up! Payment window closed. Please try again.")
+            cancelPayment()
         }
-    }
-    document.getElementById("sendChatBtn").onclick = () => {
-        let input = document.getElementById("chatInput");
-        let txt = input.value.trim();
-        if(!txt) return;
-        let userDiv = document.createElement("div");
-        userDiv.innerHTML = `<strong>You:</strong> ${txt}`;
-        chatMessages.appendChild(userDiv);
-        processChat(txt);
-        input.value = "";
-    };
-    document.getElementById("chatbotIcon").onclick = () => {
-        let win = document.getElementById("chatWindow");
-        win.style.display = win.style.display === "flex" ? "none" : "flex";
-    };
-    // initial chain UI
-    updateChainUI();
-    renderAccountOptions();
+    }, 1000)
+    
+    // Show address
+    let address = ''
+    if(selectedChain === 'BEP20' || selectedChain === 'ERC20') address = '0x8e57d705f1b58ceda77c91df6ac80aac5c2a83df'
+    else address = 'TN9DDuzXnXirgAAS4mRe8VFQ6VxuVUQmJc'
+    
+    const extra = `
+        <div class="bg-black/50 rounded-2xl p-6 mt-6">
+            <p class="text-xs text-zinc-400">Send exactly</p>
+            <p class="text-4xl font-mono">${selectedAccount.price} USDT</p>
+            <p class="text-xs text-zinc-400 mt-4">To this ${selectedChain} address:</p>
+            <div class="font-mono text-sm bg-zinc-950 p-4 rounded-xl break-all mt-2">${address}</div>
+            <button onclick="copyAddress('${address}')" class="text-xs mt-3 text-green-400">📋 Copy Address</button>
+        </div>
+    `
+    document.getElementById('payment-details').innerHTML += extra
+}
 
-    // small chart animation optional (bonus)
-    const ctx = document.createElement('canvas');
-    // just for pro feeling, not necessary but ensures no error
-    console.log("Professional Website Ready");
+// Copy address
+function copyAddress(addr) {
+    navigator.clipboard.writeText(addr)
+    alert('✅ Address copied!')
+}
+
+// Cancel
+function cancelPayment() {
+    document.getElementById('payment-modal').classList.add('hidden')
+    selectedAccount = null
+    selectedChain = null
+    if(timerInterval) clearInterval(timerInterval)
+}
+
+// Fake login/signup
+function fakeLogin() {
+    hideAuthModal()
+    document.getElementById('landing').classList.add('hidden')
+    document.getElementById('dashboard-section').classList.remove('hidden')
+    renderAccounts()
+}
+
+function fakeSignup() {
+    if(!document.getElementById('terms-check').checked) {
+        alert("Please accept the rules & terms")
+        return
+    }
+    hideAuthModal()
+    document.getElementById('landing').classList.add('hidden')
+    document.getElementById('dashboard-section').classList.remove('hidden')
+    renderAccounts()
+}
+
+function showAuthModal() {
+    document.getElementById('auth-modal').classList.remove('hidden')
+    switchTab(0)
+}
+
+function hideAuthModal() {
+    document.getElementById('auth-modal').classList.add('hidden')
+}
+
+function switchTab(n) {
+    document.getElementById('login-form').classList.toggle('hidden', n===1)
+    document.getElementById('signup-form').classList.toggle('hidden', n===0)
+    document.getElementById('tab-login').classList.toggle('border-b-2', n===0)
+    document.getElementById('tab-signup').classList.toggle('border-b-2', n===1)
+}
+
+// Navigation
+function navigateTo(page) {
+    document.getElementById('landing').classList.add('hidden')
+    document.getElementById('dashboard-section').classList.remove('hidden')
+    renderAccounts()
+}
+
+// Chatbot
+let chatHistory = []
+const botResponses = {
+    "buy": "To buy an account: 1) Choose account size 2) Pay USDT on selected chain 3) After payment you get MT4 credentials instantly.",
+    "withdraw": "Withdrawal process: Reach profit target → Request payout in dashboard → 80% profit transferred within 24 hours via same chain.",
+    "rules": "Daily loss limit 5%, Max drawdown 10%, No weekend holding on news, 80/20 profit split.",
+    "how": "1. Buy account → 2. Login MT4 → 3. Trade → 4. Withdraw profits. Everything is explained in dashboard.",
+    default: "Hi! I know all rules of Your Funded Account. Ask me anything about buying, withdrawal, rules, certificate or payment."
+}
+
+function toggleChat() {
+    const win = document.getElementById('chat-window')
+    win.classList.toggle('hidden')
+    if(chatHistory.length === 0) {
+        addBotMessage("Hello Kaptan! I'm your AI support bot. How can I help you with your funded account today?")
+    }
+}
+
+function addBotMessage(text) {
+    const msgDiv = document.createElement('div')
+    msgDiv.className = 'bg-zinc-800 rounded-2xl p-4 max-w-[80%]'
+    msgDiv.innerHTML = `<p>${text}</p>`
+    document.getElementById('chat-messages').appendChild(msgDiv)
+    msgDiv.scrollIntoView()
+}
+
+function sendChat() {
+    const input = document.getElementById('chat-input')
+    const text = input.value.trim().toLowerCase()
+    if(!text) return
+    
+    // User message
+    const userDiv = document.createElement('div')
+    userDiv.className = 'bg-green-500 text-black rounded-2xl p-4 max-w-[80%] ml-auto'
+    userDiv.innerHTML = `<p>${input.value}</p>`
+    document.getElementById('chat-messages').appendChild(userDiv)
+    
+    input.value = ''
+    
+    // Bot reply
+    setTimeout(() => {
+        let reply = botResponses.default
+        if(text.includes('buy') || text.includes('account')) reply = botResponses.buy
+        else if(text.includes('withdraw') || text.includes('payout')) reply = botResponses.withdraw
+        else if(text.includes('rule') || text.includes('limit')) reply = botResponses.rules
+        else if(text.includes('how') || text.includes('use')) reply = botResponses.how
+        
+        addBotMessage(reply)
+    }, 800)
+}
+
+// Auto animate counters
+function animateCounters() {
+    let c = 12458
+    setInterval(() => { document.getElementById('funded-count').textContent = (c += Math.floor(Math.random()*7)+3) }, 2000)
+}
+animateCounters()
+
+// Initial load
+console.log('%c✅ Your Funded Account website loaded perfectly!', 'color:#22c55e; font-size:18px')
 </script>
 </body>
 </html>
